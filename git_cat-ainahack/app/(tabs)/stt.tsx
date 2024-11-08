@@ -1,24 +1,33 @@
 import React from 'react';
-import { View, StyleSheet, Pressable, Text } from 'react-native';
+import { View, StyleSheet, Pressable, Text, ActivityIndicator } from 'react-native';
 import { useSpeechToText } from '@/hooks/useSpeechToText';
 
 export default function SttScreen() {
-  const { isRecording, audioUri, startRecording, stopRecording } = useSpeechToText();
+  const { isRecording, isTranscribing, audioUri, transcription, startRecording, stopRecording } = useSpeechToText();
 
   return (
     <View style={styles.container}>
       <Text style={styles.status}>
-        {isRecording ? 'Recording...' : 'Not Recording'}
+        {isRecording ? 'Recording...' : isTranscribing ? 'Transcribing...' : 'Not Recording'}
       </Text>
       
       <Pressable
         style={[styles.button, isRecording ? styles.stopButton : styles.startButton]}
         onPress={isRecording ? stopRecording : startRecording}
+        disabled={isTranscribing}
       >
         <Text style={styles.buttonText}>
           {isRecording ? 'Stop Recording' : 'Start Recording'}
         </Text>
       </Pressable>
+
+      {isTranscribing && <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />}
+
+      {transcription && (
+        <Text style={styles.transcription}>
+          Transcription: {transcription}
+        </Text>
+      )}
 
       {audioUri && (
         <Text style={styles.audioUri}>
@@ -62,5 +71,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     textAlign: 'center',
+  },
+  transcription: {
+    marginTop: 20,
+    fontSize: 16,
+    color: '#333',
+    textAlign: 'left',
+    padding: 10,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 5,
+    width: '100%',
+  },
+  loader: {
+    marginTop: 20,
   },
 });
