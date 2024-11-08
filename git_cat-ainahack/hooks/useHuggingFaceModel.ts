@@ -1,5 +1,5 @@
-
 import { useState } from 'react';
+import ENV from '@/config';
 
 const useHuggingFaceModel = () => {
   const [response, setResponse] = useState(null);
@@ -10,7 +10,7 @@ const useHuggingFaceModel = () => {
     setLoading(true);
     setError(null);
     try {
-      const apiUrl = process.env.EXPO_PUBLIC_HUGGING_FACE_API_URL;
+      const apiUrl = ENV.HUGGING_FACE_API_URL;
       if (!apiUrl) {
         console.log("HUGGING_FACE_API_URL is not defined");
         throw new Error('HUGGING_FACE_API_URL is not defined');
@@ -18,7 +18,7 @@ const useHuggingFaceModel = () => {
       const result = await fetch(apiUrl, {
         headers: {
           Accept: 'application/json',
-          Authorization: `Bearer ${process.env.EXPO_PUBLIC_HUGGING_FACE_TOKEN}`,
+          Authorization: `Bearer ${ENV.HUGGING_FACE_TOKEN}`,
           'Content-Type': 'application/json',
         },
         method: 'POST',
