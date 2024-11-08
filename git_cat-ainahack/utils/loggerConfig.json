@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "useHiddenContexts": true,
+  "ignoredContexts": ["FrameByFrame"],
+  "hiddenContexts": ["AppSetup"]
+}
