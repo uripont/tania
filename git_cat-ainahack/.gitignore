@@ -45,3 +45,5 @@ expo-env.d.ts
 credentials.json
 ios/
 android/
+.env
+*.tar.gz
