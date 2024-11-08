@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import ENV from '@/config';
 
-const useHuggingFaceModel = () => {
-  const [response, setResponse] = useState(null);
+const useTextInstructModel = () => {
+  const [response, setResponse] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | unknown>(null);
 
@@ -26,9 +26,16 @@ const useHuggingFaceModel = () => {
       });
       console.log("Sent request");
       const json = await result.json();
+      
       console.log("Got response");
       console.log(json);
-      setResponse(json);
+      
+      // Extract generated_text from the response
+      if (Array.isArray(json) && json.length > 0 && json[0].generated_text) {
+        setResponse(json[0].generated_text);
+      } else {
+        throw new Error('Unexpected response format');
+      }
     } catch (err) {
       setError(err);
     } finally {
@@ -39,4 +46,4 @@ const useHuggingFaceModel = () => {
   return { response, loading, error, query };
 };
 
-export default useHuggingFaceModel;
+export default useTextInstructModel;
