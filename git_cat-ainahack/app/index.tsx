@@ -19,12 +19,22 @@ import {
   useTaniaStateReactive,
   useTaniaStateAction,
 } from '@/state/stores/tania/taniaSelector';
+import {
+  useAnimationStateReactive,
+  useAnimationStateAction,
+} from '@/state/stores/animationManager/animationSelector';
 import useTextInstructModel from '@/hooks/useTextInstructModel';
 import useTextToSpeech from '@/hooks/useTextToSpeech';
 import animations from '@/constants/Animations'; // Import animations array
 
 export default function MainScreen() {
   const { navigateTo } = useNavigate();
+  const currentAnimationIndex = useAnimationStateReactive(
+    'currentAnimationIndex'
+  );
+  const setCurrentAnimationIndex = useAnimationStateAction(
+    'setCurrentAnimationIndex'
+  );
   const { width, height } = useWindowDimensions(); // Responsive dimensions
   const isWeb = Platform.OS === 'web';
 
@@ -59,10 +69,12 @@ export default function MainScreen() {
 
     if (isRecording) {
       setTaniaMode('Transcribing'); // Will trigger transcribing hook
+      setCurrentAnimationIndex(2); // Set Tania to idle animation
       setIsWaitingForUserInput(false); // Will make button disabled
       await stopRecording();
     } else {
       setTaniaMode('Listening'); // Set Tania to listening mode
+      setCurrentAnimationIndex(1); // Set Tania to listening animation
       await startRecording();
     }
   };
@@ -105,12 +117,12 @@ export default function MainScreen() {
             <WebPlayer
               autoplay
               loop
-              src={animations[0]} // Select animation by index
+              src={animations[currentAnimationIndex]} // Select animation by index
               style={styles.avatar}
             />
           ) : (
             <LottieView
-              source={animations[0]}
+              source={animations[currentAnimationIndex]} // Select animation by index
               autoPlay
               loop
               style={styles.avatar}

@@ -2,14 +2,19 @@ import { useState, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import ENV from '@/config';
 import { Platform } from 'react-native';
-import { useTaniaStateReactive, getTaniaStateValue , useTaniaStateAction} from '@/state/stores/tania/taniaSelector';
+import {
+  useTaniaStateReactive,
+  getTaniaStateValue,
+  useTaniaStateAction,
+} from '@/state/stores/tania/taniaSelector';
 import { createLogger } from '@/utils/logger';
+import { useAnimationStateAction } from '@/state/stores/animationManager/animationSelector';
 
 type TTSParams = {
   text: string;
-  voice: string;  
-  accent: string; 
-  type: string; 
+  voice: string;
+  accent: string;
+  type: string;
 };
 
 const useTextToSpeech = () => {
@@ -20,6 +25,9 @@ const useTextToSpeech = () => {
   const logger = createLogger('useTextToSpeech');
 
   const setTaniaMode = useTaniaStateAction('setTaniaMode');
+  const setCurrentAnimationIndex = useAnimationStateAction(
+    'setCurrentAnimationIndex'
+  );
 
   const query = async (text: string) => {
     setLoading(true);
@@ -31,7 +39,7 @@ const useTextToSpeech = () => {
       // Get accent preferences from state
       const accent = getTaniaStateValue('accent');
       const voice = getTaniaStateValue('voice');
-      
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -40,18 +48,19 @@ const useTextToSpeech = () => {
         },
         body: JSON.stringify({
           text,
-          voice,   
+          voice,
           accent,
-          type: text, 
-        })
+          type: text,
+        }),
       });
 
       if (!response.ok) throw new Error('TTS request failed');
 
       const audioBlob = await response.blob();
-      const uri = Platform.OS === 'web' 
-        ? URL.createObjectURL(audioBlob)
-        : `data:audio/wav;base64,${await blobToBase64(audioBlob)}`;
+      const uri =
+        Platform.OS === 'web'
+          ? URL.createObjectURL(audioBlob)
+          : `data:audio/wav;base64,${await blobToBase64(audioBlob)}`;
 
       const { sound } = await Audio.Sound.createAsync(
         { uri },
@@ -60,7 +69,7 @@ const useTextToSpeech = () => {
 
       await sound.playAsync();
       setTaniaMode('Waiting');
-
+      setCurrentAnimationIndex(0);
     } catch (err) {
       setError(err);
       setLoading(false);

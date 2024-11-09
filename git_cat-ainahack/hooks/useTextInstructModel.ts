@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import ENV from '@/config';
-import { useTaniaStateReactive, getTaniaStateValue, useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
+import {
+  useTaniaStateReactive,
+  getTaniaStateValue,
+  useTaniaStateAction,
+} from '@/state/stores/tania/taniaSelector';
+import { useAnimationStateAction } from '@/state/stores/animationManager/animationSelector';
 import { TaniaPhase } from '@/state/stores/tania/taniaState';
 import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
 import { createLogger } from '@/utils/logger';
@@ -16,6 +21,9 @@ const useTextInstructModel = () => {
 
   // Get actions
   const setTaniaMode = useTaniaStateAction('setTaniaMode');
+  const setCurrentAnimationIndex = useAnimationStateAction(
+    'setCurrentAnimationIndex'
+  );
   const addMessage = useTaniaStateAction('addMessage');
 
   // Mode change listener
@@ -39,13 +47,13 @@ const useTextInstructModel = () => {
         body: JSON.stringify({
           inputs: prompt,
           parameters: {
-            max_new_tokens: 150
-          }
+            max_new_tokens: 150,
+          },
         }),
       });
 
       const json = await result.json();
-      
+
       if (Array.isArray(json) && json.length > 0 && json[0].generated_text) {
         // Remove original prompt if it appears at the start of response
         let cleanResponse = json[0].generated_text;
@@ -74,29 +82,32 @@ const useTextInstructModel = () => {
       type: 'system',
     });
     setTaniaMode('Talking');
+    setCurrentAnimationIndex(3);
+
     return response;
   };
 
   const handleFormQuestion = async (transcription: string) => {
-    const prompt = ""; // TODO: Add FormQuestion prompt
+    const prompt = ''; // TODO: Add FormQuestion prompt
     const response = await query(prompt);
     addMessage({
       content: response,
       type: 'system',
     });
     setTaniaMode('Talking');
+    setCurrentAnimationIndex(3);
     return response;
   };
 
   const handleFormAnswer = async (transcription: string) => {
-    const prompt = ""; // TODO: Add FormAnswer prompt
+    const prompt = ''; // TODO: Add FormAnswer prompt
     const response = await query(prompt);
     addMessage({
       content: response,
       type: 'editable-system',
     });
 
-    const newQuestion = ""; // TODO: Add new question based on answer
+    const newQuestion = ''; // TODO: Add new question based on answer
     const newQuestionResponse = await query(newQuestion);
     addMessage({
       content: newQuestionResponse,
@@ -116,7 +127,7 @@ const useTextInstructModel = () => {
       logger.info('Tania is thinking...');
       const currentPhase = getTaniaStateValue('phase');
       const lastMessage = getTaniaStateValue('lastMessage');
-      
+
       const phaseHandlers: Record<TaniaPhase, () => Promise<string>> = {
         FormSelection: () => handleFormSelection(lastMessage),
         FormQuestion: () => handleFormQuestion(lastMessage),
