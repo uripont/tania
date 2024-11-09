@@ -11,7 +11,9 @@ export const useTaniaStore = create<TaniaState>(
     (set: (partial: Partial<TaniaState>) => void) => ({
       phase: initialPhase,
       taniaMode: initialTaniaMode,
-      isSavableField: (field: string) => SAVABLE_FIELDS.includes(field),
+      voice: 'elia',
+      accent: 'central',
+      type: 'text',
       setPhase: (phase: TaniaPhase) => set({ phase }),
 
       setTaniaMode: (mode: TaniaMode) => set({ taniaMode: mode }),
