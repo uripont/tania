@@ -98,10 +98,11 @@ export default function MainScreen() {
       avatarContainer: {
         alignItems: 'center',
         padding: 15,
+        bottom: 15
       },
       avatar: {
-        width: 120,
-        height: 120,
+        width: 150,
+        height: 150,
       },
       plusButton: {
         position: 'absolute',
@@ -133,7 +134,7 @@ export default function MainScreen() {
       settingsButton: {
         padding: 8,
         borderRadius: 20,
-        backgroundColor: '#007AFF',
+        backgroundColor: '#840808',
       },
       microphoneButton: {
         width: buttonSize,
@@ -156,17 +157,6 @@ export default function MainScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Plus Button for New Conversation */}
-      <TouchableOpacity
-        style={styles.plusButton}
-        onPress={handleNewConversation}
-      >
-        <MaterialIcons
-          name="add"
-          size={isWeb ? width * 0.03 : width * 0.05}
-          color="#fff"
-        />
-      </TouchableOpacity>
 
       {/* Avatar and Conversation Area */}
       <View style={styles.contentContainer}>
