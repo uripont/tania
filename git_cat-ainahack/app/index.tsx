@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,17 +7,22 @@ import {
   ScrollView,
   useWindowDimensions,
   Platform,
-  Image,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native'; // Mobile Lottie Library
-import { Player } from '@lottiefiles/react-lottie-player'; // Web Lottie library
 import { useNavigate } from '@/hooks/useNavigate';
+import animations from '@/constants/Animations'; // Import animations array
 
 export default function MainScreen() {
   const { navigateTo } = useNavigate();
   const { width, height } = useWindowDimensions(); // Responsive dimensions
-  const isWeb = Platform.OS === 'web'; // Check if platform is web
+  const isWeb = Platform.OS === 'web';
+
+  // Conditionally import `Player` for web
+  let WebPlayer;
+  if (isWeb) {
+    WebPlayer = require('@lottiefiles/react-lottie-player').Player;
+  }
 
   const handleMicrophonePress = () => {
     console.log('Microphone activated');
@@ -51,14 +56,16 @@ export default function MainScreen() {
       <View style={styles.contentContainer}>
         {/* Tania's Animated Avatar */}
         <View style={styles.avatarContainer}>
-          {isWeb ? (
-            <Image
-              source={{ uri: 'https://placeholder.com/placeholder-image.png' }}
+          {isWeb && WebPlayer ? (
+            <WebPlayer
+              autoplay
+              loop
+              src={animations[0]} // Select animation by index
               style={styles.avatar}
             />
           ) : (
             <LottieView
-              source={require('@/assets/lottieAnimations/Preguntando.json')}
+              source={animations[0]}
               autoPlay
               loop
               style={styles.avatar}
