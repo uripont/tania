@@ -181,7 +181,7 @@ const useTextInstructModel = () => {
     const currentElement = getCurrentFormElement();
     if (!currentElement) return;
 
-    const prompt = getStage2_6PromptStart(currentElement.label, currentElement.examples.join(', '), transcription);
+    const prompt = getStage2_6PromptStart(currentElement.label, '', transcription);
     const response = await query(prompt, 10);
 
     logger.info('Form answer');

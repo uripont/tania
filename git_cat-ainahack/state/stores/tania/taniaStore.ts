@@ -61,7 +61,7 @@ export const useTaniaStore = create<TaniaState>(
         set({ formElementsQueue: elements }),
 
       dequeueFormElement: () =>
-        set({ formElementsQueue: get().formElementsQueue.slice(1) }),
+        set((state) => ({ formElementsQueue: state.formElementsQueue.slice(1) })),
 
       getCurrentFormElement: () => get().formElementsQueue[0],
     })

@@ -56,7 +56,6 @@ Tu respons amb la dada: 123456789
 
 Aquesta és l'ÚLTIMA interacció:
 Camp: ${camp}
-Possibles dades: ${exempleDades}
 Usuari: ${usuari}
 Tu respons amb la dada:`;
 }
