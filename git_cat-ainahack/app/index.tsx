@@ -16,14 +16,34 @@ import { useNavigate } from '@/hooks/useNavigate';
 import { UserMessage } from '@/components/UserMessage';
 import { SystemMessage } from '@/components/SystemMessage';
 import { EditableSystemOutput } from '@/components/EditableSystemOutput';
+import { useState } from 'react';
+import { useSpeechToText } from '@/hooks/useSpeechToText';
+import {STAGE1_PROMPT, STAGE1_PROMPT_END} from '@/prompts/stage1Prompt';
 
 export default function MainScreen() {
   const { navigateTo } = useNavigate();
   const { width, height } = useWindowDimensions(); // Responsive dimensions
   const isWeb = Platform.OS === 'web'; // Check if platform is web
+  const [messages, setMessages] = useState<Array<{ type: 'user' | 'system', text: string }>>([]);
+  const [displayedTranscription, setDisplayedTranscription] = useState<string>('');
+  const {
+    isRecording,
+    transcription,
+    startRecording,
+    stopRecording
+  } = useSpeechToText();
+  const [isWaitingForUserInput, setIsWaitingForUserInput] = useState(true); // Start true for initial question
 
-  const handleMicrophonePress = () => {
-    console.log('Microphone activated');
+  const handleMicPress = async () => {
+    if (!isWaitingForUserInput) {
+      return; // Early return if we're not expecting user input
+    }
+    
+    if (isRecording) {
+      await stopRecording();
+    } else {
+      await startRecording();
+    }
   };
 
   const handleSettingsPress = () => {
@@ -93,11 +113,16 @@ export default function MainScreen() {
       microphoneButton: {
         width: buttonSize,
         height: buttonSize,
+        marginBottom: 16,
         borderRadius: buttonSize / 2,
         backgroundColor: '#840808',
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: isWeb ? 'center' : 'center',
+      },
+      microphoneButtonDisabled: {
+        backgroundColor: '#cccccc',
+        opacity: 0.7,
       },
     });
   }
@@ -142,13 +167,23 @@ export default function MainScreen() {
           style={styles.scrollView}
           contentContainerStyle={styles.conversationArea}
         >
-          <UserMessage message="Hello, this is a user message!" />
-          <SystemMessage message="This is a system response." />
-          <EditableSystemOutput 
-            initialText="This is an editable system output..."
-            onTextChange={(text) => console.log('Text changed:', text)}
-          />
         </ScrollView>
+
+        <TouchableOpacity 
+          style={[
+            styles.microphoneButton,
+            isRecording && styles.microphoneButton,
+            !isWaitingForUserInput && styles.microphoneButtonDisabled
+          ]}
+          onPress={handleMicPress}
+          disabled={!isWaitingForUserInput}
+        >
+          <MaterialIcons
+            name={isRecording ? "stop" : "mic"}
+            size={isWeb ? width * 0.03 : width * 0.06}
+            color={isWaitingForUserInput ? "#fff" : "#999"}
+          />
+        </TouchableOpacity>
 
         {/* Bottom Controls */}
         <View style={styles.bottomControls}>
