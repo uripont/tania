@@ -89,26 +89,10 @@ export default function MainScreen() {
     navigateTo('settings', 'push');
   };
 
-  const handleNewConversation = () => {
-    console.log('New conversation started');
-  };
-
   const styles = getResponsiveStyles(width, height, isWeb);
 
   return (
     <View style={styles.container}>
-      {/* Plus Button for New Conversation */}
-      <TouchableOpacity
-        style={styles.plusButton}
-        onPress={handleNewConversation}
-      >
-        <MaterialIcons
-          name="add"
-          size={isWeb ? width * 0.03 : width * 0.05}
-          color="#fff"
-        />
-      </TouchableOpacity>
-
       {/* Avatar and Conversation Area */}
       <View style={styles.contentContainer}>
         {/* Tania's Animated Avatar */}

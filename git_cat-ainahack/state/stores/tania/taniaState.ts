@@ -1,5 +1,10 @@
 export type TaniaPhase = 'FormSelection' | 'FormQuestion' | 'FormAnswer';
-export type TaniaMode = 'Talking' | 'Listening' | 'Transcribing' | 'Thinking' | 'Waiting';
+export type TaniaMode =
+  | 'Talking'
+  | 'Listening'
+  | 'Transcribing'
+  | 'Thinking'
+  | 'Waiting';
 
 export interface TaniaState {
   phase: TaniaPhase;
@@ -8,7 +13,7 @@ export interface TaniaState {
   voice: string;
   accent: string;
   type: string;
-  isWaitingForUserInput: boolean; 
+  isWaitingForUserInput: boolean;
   lastMessage: string;
 
   setPhase: (phase: TaniaPhase) => void;

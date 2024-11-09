@@ -19,15 +19,23 @@ export const useTaniaStore = create<TaniaState>(
 
       setTaniaMode: (mode: TaniaMode) => set({ taniaMode: mode }),
 
-      setIsWaitingForUserInput: (isWaiting: boolean) => set({ isWaitingForUserInput: isWaiting }),
+      setIsWaitingForUserInput: (isWaiting: boolean) =>
+        set({ isWaitingForUserInput: isWaiting }),
 
       setVoice: (voice: string) => set({ voice }),
 
       setAccent: (accent: string) => set({ accent }),
 
-      messages: [],
+      messages: ['Bon dia, soc la Tània, que puc fer per tu avui?'].map(
+        (content) => ({
+          id: Math.random().toString(36),
+          content,
+          type: 'system',
+          timestamp: Date.now(),
+        })
+      ),
 
-      lastMessage: "",
+      lastMessage: '',
 
       addMessage: (message: Omit<Message, 'id' | 'timestamp'>) =>
         set({
