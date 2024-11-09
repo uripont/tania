@@ -19,6 +19,7 @@ import { EditableSystemOutput } from '@/components/EditableSystemOutput';
 import { useState } from 'react';
 import { useSpeechToText } from '@/hooks/useSpeechToText';
 import {STAGE1_PROMPT, STAGE1_PROMPT_END} from '@/prompts/stage1Prompt';
+import { useTaniaStateReactive, useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
 
 export default function MainScreen() {
   const { navigateTo } = useNavigate();
@@ -32,16 +33,23 @@ export default function MainScreen() {
     startRecording,
     stopRecording
   } = useSpeechToText();
-  const [isWaitingForUserInput, setIsWaitingForUserInput] = useState(true); // Start true for initial question
 
+  //Step 0: In the beginning, Tania is waiting for user audio
+  const isWaitingForUserInput = useTaniaStateReactive('isWaitingForUserInput');
+  const setTaniaMode = useTaniaStateAction('setTaniaMode');
+  const setIsWaitingForUserInput = useTaniaStateAction('setIsWaitingForUserInput');
+  
   const handleMicPress = async () => {
     if (!isWaitingForUserInput) {
       return; // Early return if we're not expecting user input
     }
     
     if (isRecording) {
+      setTaniaMode('Transcribing'); // Will trigger transcribing hook
+      setIsWaitingForUserInput(false); // Will make button disabled
       await stopRecording();
     } else {
+      setTaniaMode('Listening'); // Set Tania to listening mode
       await startRecording();
     }
   };
@@ -122,7 +130,7 @@ export default function MainScreen() {
       },
       microphoneButtonDisabled: {
         backgroundColor: '#cccccc',
-        opacity: 0.7,
+        opacity: 0.2,
       },
     });
   }

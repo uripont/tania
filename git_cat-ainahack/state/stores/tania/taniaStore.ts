@@ -33,7 +33,7 @@ export const useTaniaStore = create<TaniaState>(
             ...get().messages,
             {
               ...message,
-              id: crypto.randomUUID(),
+              id: Math.random().toString(36),
               timestamp: Date.now(),
             },
           ],
