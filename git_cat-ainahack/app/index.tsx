@@ -19,6 +19,7 @@ import { useSpeechToText } from '@/hooks/useSpeechToText';
 import {STAGE1_PROMPT, STAGE1_PROMPT_END} from '@/prompts/stage1Prompt';
 import { useTaniaStateReactive, useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
 import useTextInstructModel from '@/hooks/useTextInstructModel';
+import useTextToSpeech from '@/hooks/useTextToSpeech';
 
 export default function MainScreen() {
   const { navigateTo } = useNavigate();
@@ -39,7 +40,8 @@ export default function MainScreen() {
   const taniaMode = useTaniaStateReactive('taniaMode');
 
   //Hooks that keep listening to state mode changes
-  useTextInstructModel(taniaMode); // Hook it up here
+  useTextInstructModel(); // Hook it up here
+  useTextToSpeech(); // Hook it up here
 
 
   const handleMicPress = async () => {
@@ -90,7 +92,7 @@ export default function MainScreen() {
       },
       avatarContainer: {
         alignItems: 'center',
-        padding: 20,
+        padding: 15,
       },
       avatar: {
         width: 120,

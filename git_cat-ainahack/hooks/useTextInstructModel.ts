@@ -5,7 +5,7 @@ import { TaniaPhase } from '@/state/stores/tania/taniaState';
 import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
 import { createLogger } from '@/utils/logger';
 
-const useTextInstructModel = (taniaMode: string) => {
+const useTextInstructModel = () => {
   const isFirstRender = useRef(true);
 
   const [response, setResponse] = useState<string | null>(null);
@@ -19,7 +19,7 @@ const useTextInstructModel = (taniaMode: string) => {
   const addMessage = useTaniaStateAction('addMessage');
 
   // Mode change listener
-  // const taniaMode = useTaniaStateReactive('taniaMode');
+  const taniaMode = useTaniaStateReactive('taniaMode');
 
   // Core query function
   const query = async (prompt: string) => {
@@ -73,6 +73,7 @@ const useTextInstructModel = (taniaMode: string) => {
       content: response,
       type: 'system',
     });
+    setTaniaMode('Talking');
     return response;
   };
 
