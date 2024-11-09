@@ -27,6 +27,8 @@ export const useTaniaStore = create<TaniaState>(
 
       messages: [],
 
+      lastMessage: "",
+
       addMessage: (message: Omit<Message, 'id' | 'timestamp'>) =>
         set({
           messages: [
@@ -37,6 +39,7 @@ export const useTaniaStore = create<TaniaState>(
               timestamp: Date.now(),
             },
           ],
+          lastMessage: message.content, // Save easy short reference to last message string (for transcriptions)
         }),
 
       updateMessage: (id: string, content: string) =>
