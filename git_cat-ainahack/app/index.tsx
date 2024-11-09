@@ -169,7 +169,7 @@ export default function MainScreen() {
 
 // Function to generate responsive styles based on screen dimensions and platform
 const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
-  const avatarSize = isWeb ? width * 0.2 : width * 0.35;
+  const avatarSize = isWeb ? width * 0.2 : width * 0.5;
   const buttonSize = isWeb ? width * 0.05 : width * 0.15;
   const fontSize = isWeb ? width * 0.015 : width * 0.045;
 
