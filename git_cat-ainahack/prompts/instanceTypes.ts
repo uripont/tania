@@ -16,9 +16,38 @@ export const LLISTA_INSTANCIES = [
     "INSTÀNCIA DUPLICAT DE CERTIFICAT",
     "INSTÀNCIA D'ACCIDENT DE TRÀNSIT DE LA GUARDIA URBANA",
     "CERTIFICAT DE PAGAMENT DE MULTES, IMPOSTOS, TAXES I PREUS PÚBLICS",
-    "BONIFICACIÓ DE L'IMPOST SOBRE  BÉNS IMMOBLES",
+    "BONIFICACIÓ DE L'IMPOST SOBRE BÉNS IMMOBLES",
     "CANVI D'ADREÇA FISCAL",
     "SUSPENSIÓ DE L'EXECUCIÓ DE SANCIONS PER INFRACCIONS DE TRÀNSIT",
     "ALTA PER NAIXEMENT AL PADRÓ MUNICIPAL D'HABITANTS",
     "BAIXA DE LA LLICÈNCIA DE TERRASSES",
 ]
+
+export const InstanceData: { [key: string]: any } = {
+    'INSTÀNCIA GENÈRICA': require('./instanceData/instancia-generica.json'),
+    'INSTÀNCIA BECA MENJADOR': require('./instanceData/instancia-beca-menjador.json'),
+    'INSTÀNCIA DUPLICAT DE CERTIFICAT': require('./instanceData/instancia-duplicat-de-certificat.json'),
+    'INSTÀNCIA D\'ACCIDENT DE TRÀNSIT DE LA GUARDIA URBANA': require('./instanceData/instancia-d-accident-de-transit-de-la-guardia-urbana.json'),
+    'CERTIFICAT DE PAGAMENT DE MULTES, IMPOSTOS, TAXES I PREUS PÚBLICS': require('./instanceData/certificat-pagament-de-multes-impostos-taxes-i-drets-publics.json'),
+    'BONIFICACIÓ DE L\'IMPOST SOBRE BÉNS IMMOBLES': require('./instanceData/bonificacio-de-l-impost-sobre-bens-immobles.json'),
+    'CANVI D\'ADREÇA FISCAL': require('./instanceData/canvi-d-adreca-fiscal.json'),
+    'SUSPENSIÓ DE L\'EXECUCIÓ DE SANCIONS PER INFRACCIONS DE TRÀNSIT': require('./instanceData/suspensio-de-l-execusio-de-sancions-per-infraccions-de-transit.json'),
+    'ALTA PER NAIXEMENT AL PADRÓ MUNICIPAL D\'HABITANTS': require('./instanceData/alta-per-naixament-al-padro-municipal-d-habitants.json'),
+    'BAIXA DE LA LLICÈNCIA DE TERRASSES': require('./instanceData/alta-per-baixa-de-la-llicencia-de-terrasses.json')
+  };
+  
+  export const getInstanceData = (key: string) => {
+    const data = InstanceData[key];
+    if (!data) throw new Error(`No data found for instance type: ${key}`);
+    return data;
+  };
+/* 
+  'INSTÀNCIA BECA MENJADOR': require('./instanceData/instancia-beca-menjador.json'),
+    'INSTÀNCIA DUPLICAT DE CERTIFICAT': require('./instanceData/instancia-duplicat-certificat.json'),
+    'INSTÀNCIA D\'ACCIDENT DE TRÀNSIT DE LA GUARDIA URBANA': require('./instanceData/instantia-accident-transit.json'),
+    'CERTIFICAT DE PAGAMENT DE MULTES, IMPOSTOS, TAXES I PREUS PÚBLICS': require('./instanceData/certificat-pagament.json'),    
+    'BONIFICACIÓ DE L\'IMPOST SOBRE  BÉNS IMMOBLES': require('./instanceData/bonificacio-ibi.json'),
+    'CANVI D\'ADREÇA FISCAL': require('./instanceData/canvi-adreca-fiscal.json'),
+    'SUSPENSIÓ DE L\'EXECUCIÓ DE SANCIONS PER INFRACCIONS DE TRÀNSIT': require('./instanceData/suspensio-sancions-transit.json'),
+    'ALTA PER NAIXEMENT AL PADRÓ MUNICIPAL D\'HABITANTS': require('./instanceData/alta-naixement-padro.json'),
+    'BAIXA DE LA LLICÈNCIA DE TERRASSES': require('./instanceData/baixa-llicencia-terrasses.json'), */

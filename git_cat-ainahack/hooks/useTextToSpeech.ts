@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import ENV from '@/config';
 import { Platform } from 'react-native';
-import { useTaniaStateReactive } from '@/state/stores/tania/taniaSelector';
+import { useTaniaStateReactive, getTaniaStateValue , useTaniaStateAction} from '@/state/stores/tania/taniaSelector';
+import { createLogger } from '@/utils/logger';
 
 type TTSParams = {
   text: string;
@@ -11,65 +12,63 @@ type TTSParams = {
   type: string; 
 };
 
-export const useTextToSpeech = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+const useTextToSpeech = () => {
+  const isFirstRender = useRef(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<null | unknown>(null);
 
-  const voice = useTaniaStateReactive('voice');
-  const accent = useTaniaStateReactive('accent');
-  const type = useTaniaStateReactive('type');
+  const logger = createLogger('useTextToSpeech');
 
-  const speak = async ({ text }: { text: string }) => {
+  const setTaniaMode = useTaniaStateAction('setTaniaMode');
+
+  const query = async (text: string) => {
+    setLoading(true);
+    setError(null);
     try {
-      setError(null);
-      setIsLoading(true);
+      const apiUrl = ENV.TEXT_TO_SPEECH_API_URL;
+      if (!apiUrl) throw new Error('TEXT_TO_SPEECH_API_URL is not defined');
 
-      const payload = { text, voice, accent, type };
+      // Get accent preferences from state
+      const accent = getTaniaStateValue('accent');
+      const voice = getTaniaStateValue('voice');
       
-      console.log('Making TTS request with payload:', payload);
-      console.log('To URL:', ENV.TEXT_TO_SPEECH_API_URL);
-
-      const response = await fetch(ENV.TEXT_TO_SPEECH_API_URL, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ENV.AINAHACK_ENDPOINT_TOKEN}`,
+          Authorization: `Bearer ${ENV.AINAHACK_ENDPOINT_TOKEN}`,
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          text,
+          voice,   
+          accent,
+          type: text, 
+        })
       });
 
-      console.log('Response status:', response.status);
-      
+      if (!response.ok) throw new Error('TTS request failed');
+
       const audioBlob = await response.blob();
-      // Create a local URI for the blob
       const uri = Platform.OS === 'web' 
         ? URL.createObjectURL(audioBlob)
         : `data:audio/wav;base64,${await blobToBase64(audioBlob)}`;
 
-      const { sound: newSound } = await Audio.Sound.createAsync(
+      const { sound } = await Audio.Sound.createAsync(
         { uri },
         { shouldPlay: true }
       );
 
-      setSound(newSound);
-      setIsPlaying(true);
-
-      newSound.setOnPlaybackStatusUpdate((status) => {
-        if (status.isLoaded && !status.isPlaying) {
-          setIsPlaying(false);
-        }
-      });
+      await sound.playAsync();
+      setTaniaMode('Waiting');
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
+      setError(err);
+      setLoading(false);
+      throw err;
     }
   };
 
-  // Helper function to convert blob to base64
+  // Helper function
   const blobToBase64 = async (blob: Blob): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -83,18 +82,26 @@ export const useTextToSpeech = () => {
     });
   };
 
-  const stop = async () => {
-    try {
-      if (sound) {
-        await sound.stopAsync();
-        await sound.unloadAsync();
-        setSound(null);
-      }
-      setIsPlaying(false);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    }
-  };
+  // Listen to TaniaMode changes
+  const taniaMode = useTaniaStateReactive('taniaMode');
 
-  return { speak, stop, isLoading, isPlaying, error };
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (taniaMode === 'Talking') {
+      logger.log('Tania is talking');
+      const lastMessage = getTaniaStateValue('lastMessage');
+      logger.log('Last message:', lastMessage);
+      if (lastMessage) {
+        query(lastMessage).catch(console.error);
+      }
+    }
+  }, [taniaMode]);
+
+  return { loading, error };
 };
+
+export default useTextToSpeech;

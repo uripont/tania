@@ -1,0 +1,44 @@
+[
+    {
+        "label": "Nom del nadó",
+        "question": "Quin és el nom del nadó?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Data de naixement",
+        "question": "Quina és la data de naixement?",
+        "examples": ["01/01/2023", "15/05/2023"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Lloc de naixement",
+        "question": "On va tenir lloc el naixement?",
+        "examples": ["Barcelona", "Girona"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Nom del pare",
+        "question": "Quin és el nom del pare?",
+        "examples": ["Pere Garcia", "Anna López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI del pare",
+        "question": "Quin és el DNI del pare?",
+        "examples": ["12345678A", "87654321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Nom de la mare",
+        "question": "Quin és el nom de la mare?",
+        "examples": ["Maria Pérez", "Laura Martínez"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI de la mare",
+        "question": "Quin és el DNI de la mare?",
+        "examples": ["12345678C", "87654321D"],
+        "preferencesKey": null
+    }
+]

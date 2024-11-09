@@ -1,0 +1,39 @@
+
+[
+    {
+        "label": "Nom del sol·licitant",
+        "question": "Quin és el nom del sol·licitant?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI del sol·licitant",
+        "question": "Quin és el DNI del sol·licitant?",
+        "examples": ["12345678A", "87654321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Adreça de la terrassa",
+        "question": "Quina és l'adreça de la terrassa?",
+        "examples": ["Carrer Major, 1", "Avinguda Catalunya, 10"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Número de llicència",
+        "question": "Quin és el número de llicència?",
+        "examples": ["12345", "67890"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Data de sol·licitud",
+        "question": "Quina és la data de sol·licitud?",
+        "examples": ["01/01/2023", "15/05/2023"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Motiu de la baixa",
+        "question": "Quin és el motiu de la baixa?",
+        "examples": ["Tancament del negoci", "Renovació de llicència"],
+        "preferencesKey": null
+    }
+]

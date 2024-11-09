@@ -1,0 +1,38 @@
+[
+    {
+        "label": "Asumpte",
+        "question": "Quin és l'asumpte?",
+        "examples": ["Duplicat de certificat", "Sol·licitud de beca"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Solicitant",
+        "question": "Quin és el nom del solicitant?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Abogada",
+        "question": "Quin és el nom de l'abogada?",
+        "examples": ["Anna Pérez", "Laura Martínez"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Expedient",
+        "question": "Quin és el número d'expedient?",
+        "examples": ["12345", "67890"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Inmoble",
+        "question": "Quin és el nom de l'inmoble?",
+        "examples": ["Casa Blanca", "Edifici Blau"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Document a depositar",
+        "question": "Quin és el document a depositar?",
+        "examples": ["Certificat de naixement", "Passaport"],
+        "preferencesKey": null
+    }
+]

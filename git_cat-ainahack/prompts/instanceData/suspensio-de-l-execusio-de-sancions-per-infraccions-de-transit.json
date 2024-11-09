@@ -1,0 +1,38 @@
+[
+    {
+        "label": "Nom del sol·licitant",
+        "question": "Quin és el nom del sol·licitant?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI del sol·licitant",
+        "question": "Quin és el DNI del sol·licitant?",
+        "examples": ["12345678A", "87654321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Número de sanció",
+        "question": "Quin és el número de sanció?",
+        "examples": ["12345", "67890"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Data de la sanció",
+        "question": "Quina és la data de la sanció?",
+        "examples": ["01/01/2023", "15/05/2023"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Motiu de la suspensió",
+        "question": "Quin és el motiu de la suspensió?",
+        "examples": ["Recurs presentat", "Error administratiu"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Documentació adjunta",
+        "question": "Quina és la documentació adjunta?",
+        "examples": ["Recurs", "Informe mèdic"],
+        "preferencesKey": null
+    }
+]
