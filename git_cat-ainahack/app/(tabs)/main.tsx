@@ -4,6 +4,7 @@ import { useSpeechToText } from '@/hooks/useSpeechToText';
 import useTextInstructModel from '@/hooks/useTextInstructModel';
 import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
 import { useInstanceSearch } from '@/hooks/useInstanceSearch';
+import { useTextToSpeech } from '@/hooks/useTextToSpeech';
 
 const Main = () => {
   const { 
@@ -16,6 +17,7 @@ const Main = () => {
   const textInstruct = useTextInstructModel();
   const [displayedTranscription, setDisplayedTranscription] = useState<string | null>(null);
   const [displayedInstruction, setDisplayedInstruction] = useState<string | null>(null);
+  const { speak, stop, isLoading: isSpeaking } = useTextToSpeech();
 
   useEffect(() => {
     if (transcription) {
@@ -29,6 +31,8 @@ const Main = () => {
   useEffect(() => {
     if (textInstruct.response) {
       setDisplayedInstruction(textInstruct.response);
+      // Speak the instruction using voice settings from state
+      speak({ text: textInstruct.response });
     }
   }, [textInstruct.response]);
 
@@ -37,6 +41,7 @@ const Main = () => {
   const handleStartRecording = async () => {
     setDisplayedTranscription(null);
     setDisplayedInstruction(null);
+    await stop(); // Stop any ongoing speech
     await startRecording();
   };
 
@@ -67,7 +72,7 @@ const Main = () => {
         </Text>
       </ScrollView>
 
-      {(isRecording || textInstruct.loading) && (
+      {(isRecording || textInstruct.loading || isSpeaking) && (
         <ActivityIndicator size="large" color="#0000ff" />
       )}
     </View>

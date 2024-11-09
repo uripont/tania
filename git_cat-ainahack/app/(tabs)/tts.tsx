@@ -59,10 +59,7 @@ export default function TtsScreen() {
     if (text.trim()) {
       console.log('Submitting with voice:', selectedVoice);
       speak({
-        text,
-        voice: selectedVoice.name.toLowerCase(),
-        accent: selectedVoice.accent,
-        type: 'text'
+        text
       });
     }
   };

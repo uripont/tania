@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Audio } from 'expo-av';
 import ENV from '@/config';
 import { Platform } from 'react-native';
+import { useTaniaStateReactive } from '@/state/stores/tania/taniaSelector';
 
 type TTSParams = {
   text: string;
@@ -16,7 +17,11 @@ export const useTextToSpeech = () => {
   const [error, setError] = useState<string | null>(null);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
 
-  const speak = async ({ text, voice, accent, type }: TTSParams) => {
+  const voice = useTaniaStateReactive('voice');
+  const accent = useTaniaStateReactive('accent');
+  const type = useTaniaStateReactive('type');
+
+  const speak = async ({ text }: { text: string }) => {
     try {
       setError(null);
       setIsLoading(true);
