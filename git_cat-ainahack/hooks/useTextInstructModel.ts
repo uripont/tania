@@ -4,6 +4,7 @@ import { useTaniaStateReactive, getTaniaStateValue, useTaniaStateAction } from '
 import { TaniaPhase } from '@/state/stores/tania/taniaState';
 import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
 import { createLogger } from '@/utils/logger';
+import {LLISTA_INSTANCIES} from '@/prompts/instanceTypes';
 
 const useTextInstructModel = () => {
   const isFirstRender = useRef(true);
@@ -16,7 +17,10 @@ const useTextInstructModel = () => {
 
   // Get actions
   const setTaniaMode = useTaniaStateAction('setTaniaMode');
+  const setPhase = useTaniaStateAction('setPhase');
   const addMessage = useTaniaStateAction('addMessage');
+  const setSelectedInstance = useTaniaStateAction('setSelectedInstance');
+
 
   // Mode change listener
   const taniaMode = useTaniaStateReactive('taniaMode');
@@ -66,15 +70,48 @@ const useTextInstructModel = () => {
 
   // Phase-specific handlers
   const handleFormSelection = async (transcription: string) => {
-    logger.info('Handling form selection:', transcription);
+    logger.info('Handling form selection:', transcription);  
+    
     const prompt = `${STAGE1_PROMPT}${transcription}${STAGE1_PROMPT_END}`;
     const response = await query(prompt);
     addMessage({
-      content: response,
-      type: 'system',
+        content: response,
+        type: 'system',
     });
-    setTaniaMode('Talking');
-    return response;
+    
+    // Debug logs
+    logger.info('Response received:', response);
+    
+    // Extract ID from response and find matching instance
+    const idPattern = /\(id:\s*(\d{1,2})\)/;
+    const match = response.match(idPattern);
+    
+    // Debug match result
+    logger.info('Regex match result:', match);
+
+    if (match && match[1]) {
+      const idNumber = match[1];
+      logger.info('Found ID:', idNumber);
+      
+      // Find matching instance that starts with this ID
+      const matchedInstance = LLISTA_INSTANCIES.find(instance => 
+        instance.startsWith(match[0])
+      );
+      
+      logger.info('Looking for instance starting with:', `${idNumber}-`);
+      logger.info('Available instances:', LLISTA_INSTANCIES);
+
+      if (matchedInstance) {
+        logger.info('Matched instances:', [matchedInstance]);
+        setSelectedInstance(matchedInstance);
+        setPhase('FormQuestion');
+        setTaniaMode('Thinking');
+        return response;
+      }
+    } else {
+      logger.info('No matched instances found');
+      return response;
+    }
   };
 
   const handleFormQuestion = async (transcription: string) => {

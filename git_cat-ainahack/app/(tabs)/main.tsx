@@ -3,7 +3,6 @@ import { View, Button, Text, ScrollView, ActivityIndicator, StyleSheet } from 'r
 import { useSpeechToText } from '@/hooks/useSpeechToText';
 import useTextInstructModel from '@/hooks/useTextInstructModel';
 import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
-import { useInstanceSearch } from '@/hooks/useInstanceSearch';
 import { useTextToSpeech } from '@/hooks/useTextToSpeech';
 
 const Main = () => {

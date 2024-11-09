@@ -11,6 +11,9 @@ export interface TaniaState {
   isWaitingForUserInput: boolean; 
   lastMessage: string;
 
+  selectedInstance: string | null;
+  setSelectedInstance: (instance: string | null) => void;
+
   setPhase: (phase: TaniaPhase) => void;
   setTaniaMode: (mode: TaniaMode) => void;
   setIsWaitingForUserInput: (isWaiting: boolean) => void;

@@ -1,7 +1,6 @@
 import { create } from 'zustand';
-import { TaniaState, TaniaPhase, TaniaMode } from './taniaState';
+import { TaniaState, TaniaPhase, TaniaMode, Message } from './taniaState';
 import { taniaStateLogger } from './taniaMiddleware';
-import { Message } from './taniaState';
 
 const initialPhase: TaniaPhase = 'FormSelection';
 const initialTaniaMode: TaniaMode = 'Waiting';
@@ -11,10 +10,18 @@ export const useTaniaStore = create<TaniaState>(
     (set: (partial: Partial<TaniaState>) => void, get: () => TaniaState) => ({
       phase: initialPhase,
       taniaMode: initialTaniaMode,
+
       voice: 'elia',
       accent: 'central',
       type: 'text',
+
       isWaitingForUserInput: true,
+      messages: [],
+      lastMessage: "",
+
+      // New state
+      selectedInstance: null,
+
       setPhase: (phase: TaniaPhase) => set({ phase }),
 
       setTaniaMode: (mode: TaniaMode) => set({ taniaMode: mode }),
@@ -25,9 +32,8 @@ export const useTaniaStore = create<TaniaState>(
 
       setAccent: (accent: string) => set({ accent }),
 
-      messages: [],
-
-      lastMessage: "",
+      // New action
+      setSelectedInstance: (instance: string | null) => set({ selectedInstance: instance }),
 
       addMessage: (message: Omit<Message, 'id' | 'timestamp'>) =>
         set({
