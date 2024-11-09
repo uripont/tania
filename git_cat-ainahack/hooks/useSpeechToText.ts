@@ -12,6 +12,7 @@ import ENV from '@/config';
 import { convertToWav } from '@/utils/audioUtils';
 import { useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
 import { Message } from '@/state/stores/tania/taniaState';
+import { useAnimationStateAction } from '@/state/stores/animationManager/animationSelector';
 
 export const useSpeechToText = () => {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -23,13 +24,18 @@ export const useSpeechToText = () => {
 
   const addMessage = useTaniaStateAction('addMessage');
   const setTaniaMode = useTaniaStateAction('setTaniaMode');
+  const setCurrentAnimationIndex = useAnimationStateAction(
+    'setCurrentAnimationIndex'
+  );
 
   const startRecording = useCallback(async () => {
     try {
       if (Platform.OS === 'web') {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         mediaRecorder.current = new MediaRecorder(stream, {
-          mimeType: 'audio/webm;codecs=opus'
+          mimeType: 'audio/webm;codecs=opus',
         });
         chunksRef.current = [];
 
@@ -65,7 +71,7 @@ export const useSpeechToText = () => {
             bitsPerSecond: 128000,
           },
         });
-        
+
         setRecording(recording);
         setIsRecording(true);
       }
@@ -81,7 +87,9 @@ export const useSpeechToText = () => {
           if (mediaRecorder.current) {
             mediaRecorder.current.onstop = async () => {
               try {
-                const originalBlob = new Blob(chunksRef.current, { type: 'audio/webm;codecs=opus' });
+                const originalBlob = new Blob(chunksRef.current, {
+                  type: 'audio/webm;codecs=opus',
+                });
                 const wavBlob = await convertToWav(originalBlob);
                 const uri = URL.createObjectURL(wavBlob);
                 setAudioUri(uri);
@@ -97,8 +105,8 @@ export const useSpeechToText = () => {
                   const apiResponse = await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
-                      'Accept': 'application/json',
-                      'Authorization': `Bearer ${ENV.AINAHACK_ENDPOINT_TOKEN}`,
+                      Accept: 'application/json',
+                      Authorization: `Bearer ${ENV.AINAHACK_ENDPOINT_TOKEN}`,
                       'Content-Type': 'audio/wav',
                     },
                     body: wavBlob,
@@ -110,25 +118,30 @@ export const useSpeechToText = () => {
                   console.log('Response body:', responseText);
 
                   if (!apiResponse.ok) {
-                    throw new Error(`API error: ${apiResponse.status} - ${responseText}`);
+                    throw new Error(
+                      `API error: ${apiResponse.status} - ${responseText}`
+                    );
                   }
                   addMessage({
-                    type:  'user',
-                    content: parsedResponse.text,});
-                  setTaniaMode("Thinking");
-                  
+                    type: 'user',
+                    content: parsedResponse.text,
+                  });
+                  setTaniaMode('Thinking');
+                  setCurrentAnimationIndex(3);
                 } catch (error) {
                   console.error('Transcription 1 failed:', error);
-                } 
+                }
                 resolve();
               } catch (error) {
                 console.error('Transcription 2 failed:', error);
-              } 
+              }
               resolve();
             };
 
             mediaRecorder.current.stop();
-            mediaRecorder.current.stream.getTracks().forEach(track => track.stop());
+            mediaRecorder.current.stream
+              .getTracks()
+              .forEach((track) => track.stop());
           }
         });
       } else if (Platform.OS === 'android') {
@@ -144,7 +157,8 @@ export const useSpeechToText = () => {
         if (uri) {
           try {
             const apiUrl = ENV.SPEECH_TO_TEXT_API_URL;
-            if (!apiUrl) throw new Error('SPEECH_TO_TEXT_API_URL is not defined');
+            if (!apiUrl)
+              throw new Error('SPEECH_TO_TEXT_API_URL is not defined');
 
             // Get the audio data
             const response = await fetch(uri);
@@ -153,29 +167,33 @@ export const useSpeechToText = () => {
             console.log('Audio blob size:', audioBlob.size);
 
             const apiResponse = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                  'Accept': 'application/json',
-                  'Authorization': `Bearer ${ENV.AINAHACK_ENDPOINT_TOKEN}`,
-                  'Content-Type': 'audio/mpeg',
-                },
-                body: audioBlob, // Send the raw audio blob
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${ENV.AINAHACK_ENDPOINT_TOKEN}`,
+                'Content-Type': 'audio/mpeg',
+              },
+              body: audioBlob, // Send the raw audio blob
             });
 
             if (!apiResponse.ok) {
-              throw new Error(`API request failed with status ${apiResponse.status}`);
+              throw new Error(
+                `API request failed with status ${apiResponse.status}`
+              );
             }
 
             const result = await apiResponse.json();
             console.log('Transcription result:', result);
 
             addMessage({
-              type:  'user',
-              content: result,});
-            setTaniaMode("Thinking");
+              type: 'user',
+              content: result,
+            });
+            setTaniaMode('Thinking');
+            setCurrentAnimationIndex(3);
           } catch (error) {
             console.error('Error during transcription:', error);
-          } 
+          }
         }
       } else {
         if (!recording) return;
@@ -186,7 +204,7 @@ export const useSpeechToText = () => {
           await Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
           });
-          
+
           const uri = recording.getURI();
           console.log('Recording stopped and stored at', uri);
           setAudioUri(uri);
@@ -208,8 +226,8 @@ export const useSpeechToText = () => {
               const apiResponse = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                  'Accept': 'application/json',
-                  'Authorization': `Bearer ${ENV.AINAHACK_ENDPOINT_TOKEN}`,
+                  Accept: 'application/json',
+                  Authorization: `Bearer ${ENV.AINAHACK_ENDPOINT_TOKEN}`,
                   'Content-Type': 'audio/wav',
                 },
                 body: audioData, // Send the raw audio blob
@@ -221,15 +239,22 @@ export const useSpeechToText = () => {
               console.log('Response body:', responseText);
 
               if (!apiResponse.ok) {
-                throw new Error(`API error: ${apiResponse.status} - ${responseText}`);
+                throw new Error(
+                  `API error: ${apiResponse.status} - ${responseText}`
+                );
               }
               addMessage({
-                type:  'user',
-                content: parsedResponse.text,});
-              setTaniaMode("Thinking");
+                type: 'user',
+                content: parsedResponse.text,
+              });
+              setTaniaMode('Thinking');
+              setCurrentAnimationIndex(3);
             } catch (error) {
               console.error('Transcription 3 failed:', error);
-              setTranscription('Error: ' + (error instanceof Error ? error.message : 'Unknown error'));
+              setTranscription(
+                'Error: ' +
+                  (error instanceof Error ? error.message : 'Unknown error')
+              );
             }
           }
         } catch (err) {
