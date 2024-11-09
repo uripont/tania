@@ -108,6 +108,7 @@ const useTextInstructModel = () => {
         setSelectedInstance(matchedInstance);
         
         setPhase('FormQuestion');
+        setTaniaMode('Talking');
         
         // Handle first element immediately
         handleFormQuestion();
@@ -163,12 +164,15 @@ const useTextInstructModel = () => {
     // Process current element
     const prompt = `${STAGE_2_PROMPT_START}${currentElement.label}${STAGE_2_PROMPT_QUESTION}`;
     const response = await query(prompt);
-    
-    setTaniaMode('Talking');
+    const isWaiting = getTaniaStateValue('taniaMode') === 'Waiting';
+    if (!isWaiting) {
+      setTaniaMode('Talking');
+    }
     addMessage({
       content: response,
       type: 'system'
     });
+    setPhase('FormAnswer');
   
     return response;
   };
@@ -185,11 +189,16 @@ const useTextInstructModel = () => {
       type: 'editable-system'
     });
 
+    logger.info('Form answer response:', response);
+
     // Move to next element
     dequeueFormElement();
     
     // Check if more elements exist
     const nextElement = getCurrentFormElement();
+    setTaniaMode('Thinking');
+
+    logger.info('Next element:', nextElement);
     if (nextElement) {
       handleFormQuestion();
     } else {
