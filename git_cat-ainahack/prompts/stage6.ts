@@ -20,15 +20,39 @@ Possibles dades: DNI: 12345678X, Passaport: AB1234567, T. R.: TR123456789
 Usuari: El meu DNI és 12345678X.
 Tu respons amb la dada: 12345678X
 
+
+
+
+
+
+
+
 Camp: Nom i cognoms
 Possibles dades: Joan Garcia Pérez, Maria López Martín, Carlos Sánchez Torres.
 Usuari: Jo em dic Maria López Martín.
 Tu respons amb la dada: Maria López Martín
 
+
+
+
+
+
+
+
+
+
 Camp: Telèfon
 Possibles dades: 123456789, 987654321, 666777888.
 Usuari: Si, mira, el meu telèfon és 123456789.
 Tu respons amb la dada: 123456789
+
+
+
+
+
+
+
+
 
 Aquesta és l'ÚLTIMA interacció:
 Camp: ${camp}

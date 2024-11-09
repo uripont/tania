@@ -33,7 +33,7 @@ const useTextInstructModel = () => {
   const taniaMode = useTaniaStateReactive('taniaMode');
 
   // Core query function
-  const query = async (prompt: string) => {
+  const query = async (prompt: string, max_new_tokens: number ) => {
     setLoading(true);
     setError(null);
     try {
@@ -50,7 +50,7 @@ const useTextInstructModel = () => {
         body: JSON.stringify({
           inputs: prompt,
           parameters: {
-            max_new_tokens: 150
+            max_new_tokens: max_new_tokens,
           }
         }),
       });
@@ -80,7 +80,7 @@ const useTextInstructModel = () => {
     logger.info('Handling form selection:', transcription);  
     
     const prompt = `${STAGE1_PROMPT}${transcription}${STAGE1_PROMPT_END}`;
-    const response = await query(prompt);
+    const response = await query(prompt, 65);
     addMessage({
         content: response,
         type: 'system',
@@ -163,7 +163,7 @@ const useTextInstructModel = () => {
     }
     // Process current element
     const prompt = `${STAGE_2_PROMPT_START}${currentElement.label}${STAGE_2_PROMPT_QUESTION}`;
-    const response = await query(prompt);
+    const response = await query(prompt, 10);
     const isWaiting = getTaniaStateValue('taniaMode') === 'Waiting';
     if (!isWaiting) {
       setTaniaMode('Talking');
@@ -182,7 +182,9 @@ const useTextInstructModel = () => {
     if (!currentElement) return;
 
     const prompt = getStage2_6PromptStart(currentElement.label, currentElement.examples.join(', '), transcription);
-    const response = await query(prompt);
+    const response = await query(prompt, 10);
+
+    logger.info('Form answer');
 
     addMessage({
       content: response,
