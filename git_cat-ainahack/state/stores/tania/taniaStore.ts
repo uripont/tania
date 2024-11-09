@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { TaniaState, TaniaPhase, TaniaMode, Message } from './taniaState';
+import { TaniaState, TaniaPhase, TaniaMode, Message, FormElement } from './taniaState';
 import { taniaStateLogger } from './taniaMiddleware';
 
 const initialPhase: TaniaPhase = 'FormSelection';
@@ -15,12 +15,14 @@ export const useTaniaStore = create<TaniaState>(
       accent: 'central',
       type: 'text',
 
-      isWaitingForUserInput: true,
+      isWaitingForUserInput: false,
       messages: [],
       lastMessage: "",
 
-      // New state
       selectedInstance: null,
+      
+      // Form elements queue state
+      formElementsQueue: [],
 
       setPhase: (phase: TaniaPhase) => set({ phase }),
 
@@ -32,7 +34,6 @@ export const useTaniaStore = create<TaniaState>(
 
       setAccent: (accent: string) => set({ accent }),
 
-      // New action
       setSelectedInstance: (instance: string | null) => set({ selectedInstance: instance }),
 
       addMessage: (message: Omit<Message, 'id' | 'timestamp'>) =>
@@ -54,6 +55,15 @@ export const useTaniaStore = create<TaniaState>(
             msg.id === id ? { ...msg, content } : msg
           ),
         }),
+
+      // Form elements queue methods
+      setFormElementsQueue: (elements: FormElement[]) => 
+        set({ formElementsQueue: elements }),
+
+      dequeueFormElement: () =>
+        set({ formElementsQueue: get().formElementsQueue.slice(1) }),
+
+      getCurrentFormElement: () => get().formElementsQueue[0],
     })
   )
 );

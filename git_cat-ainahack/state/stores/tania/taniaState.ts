@@ -23,6 +23,11 @@ export interface TaniaState {
   messages: Message[];
   addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => void;
   updateMessage: (id: string, content: string) => void;
+
+  formElementsQueue: FormElement[];
+  setFormElementsQueue: (elements: FormElement[]) => void;
+  dequeueFormElement: () => void;
+  getCurrentFormElement: () => FormElement | undefined;
 }
 
 export interface Message {
@@ -30,4 +35,11 @@ export interface Message {
   timestamp: number;
   type: 'system' | 'user' | 'editable-system';
   content: string;
+}
+
+export interface FormElement {
+  id: string;
+  label: string;
+  question: string;
+  examples: Array<string>;
 }
