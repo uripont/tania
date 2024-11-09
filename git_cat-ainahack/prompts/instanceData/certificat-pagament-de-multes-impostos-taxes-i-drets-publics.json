@@ -1,0 +1,38 @@
+[
+    {
+        "label": "Nom del contribuent",
+        "question": "Quin és el nom del contribuent?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI del contribuent",
+        "question": "Quin és el DNI del contribuent?",
+        "examples": ["12345678A", "87654321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Tipus de pagament",
+        "question": "Quin és el tipus de pagament?",
+        "examples": ["Multa", "Impost", "Taxa", "Dret públic"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Import pagat",
+        "question": "Quin és l'import pagat?",
+        "examples": ["100€", "200€"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Data de pagament",
+        "question": "Quina és la data de pagament?",
+        "examples": ["01/01/2023", "15/05/2023"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Referència de pagament",
+        "question": "Quina és la referència de pagament?",
+        "examples": ["ABC123", "XYZ789"],
+        "preferencesKey": null
+    }
+]

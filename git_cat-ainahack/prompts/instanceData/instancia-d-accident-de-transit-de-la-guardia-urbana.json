@@ -1,0 +1,38 @@
+[
+    {
+        "label": "Data de l'accident",
+        "question": "Quina és la data de l'accident?",
+        "examples": ["01/01/2023", "15/05/2023"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Lloc de l'accident",
+        "question": "On va tenir lloc l'accident?",
+        "examples": ["Carrer Major, 1", "Avinguda Catalunya, 10"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Nom del conductor",
+        "question": "Quin és el nom del conductor?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI del conductor",
+        "question": "Quin és el DNI del conductor?",
+        "examples": ["12345678A", "87654321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Matrícula del vehicle",
+        "question": "Quina és la matrícula del vehicle?",
+        "examples": ["1234ABC", "5678DEF"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Descripció de l'accident",
+        "question": "Quina és la descripció de l'accident?",
+        "examples": ["Col·lisió frontal", "Col·lisió per darrere"],
+        "preferencesKey": null
+    }
+]

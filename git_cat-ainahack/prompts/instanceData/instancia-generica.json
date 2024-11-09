@@ -1,0 +1,129 @@
+[
+    {
+      "label": "DNI / Pass. / T. R.",
+      "question": "Quin és el teu document d'identitat?",
+      "examples": ["DNI: 12345678X", "Passaport: AB1234567", "T. R.: TR123456789"],
+      "preferencesKey": "dni"
+    },
+    {
+      "label": "Nom i cognoms",
+      "description": "Nom complet",
+      "examples": ["Joan Garcia Pérez", "Maria López Martín", "Carlos Sánchez Torres"],
+      "preferencesKey": "nom_complet"
+    },
+    {
+      "label": "Nom sentit (1)",
+      "description": "Nom preferit o familiar, si és diferent del nom oficial",
+      "examples": ["Joanito", "Marieta", "Carlitos"],
+      "preferencesKey": "nom_sentit"
+    },
+    {
+      "label": "Domicili",
+      "description": "Adreça completa sense número",
+      "examples": ["Carrer de l'Example", "Avinguda Diagonal", "Plaça Catalunya"],
+      "preferencesKey": "domicili"
+    },
+    {
+      "label": "Núm., pis",
+      "description": "Número de casa i pis",
+      "examples": ["123, 4t", "56, 2n", "78, planta baixa escala 2"],
+      "preferencesKey": "numero_pis"
+    },
+    {
+      "label": "Porta",
+      "description": "Número de porta o apartament",
+      "examples": ["3B", "2A", "1C"],
+      "preferencesKey": "porta"
+    },
+    {
+      "label": "Població",
+      "description": "Ciutat o poble de residència",
+      "examples": ["Barcelona", "Girona", "Lleida"],
+      "preferencesKey": "poblacio"
+    },
+    {
+      "label": "Província",
+      "description": "Província",
+      "examples": ["Barcelona", "Tarragona", "Lleida"],
+      "preferencesKey": "provincia"
+    },
+    {
+      "label": "C. P.",
+      "description": "Codi postal",
+      "examples": ["08001", "17003", "43002"],
+      "preferencesKey": "codi_postal"
+    },
+    {
+      "label": "Tel.",
+      "description": "Número de telèfon",
+      "examples": ["+34 600 123 456", "+34 931 456 789", "+34 612 345 678"],
+      "preferencesKey": "telefon"
+    },
+    {
+      "label": "Correu electrònic",
+      "description": "Adreça de correu electrònic",
+      "examples": ["exemple@correu.com", "persona@email.es", "usuari@domini.cat"],
+      "preferencesKey": "correu_electronic"
+    },
+    {
+      "label": "Núm. d'expedient",
+      "description": "Número d'expedient si està disponible",
+      "examples": ["2024-001234", "2023-567890", "2022-987654"],
+      "preferencesKey": null
+    },
+    {
+      "label": "En representació de",
+      "description": "Nom de l'entitat o persona representada, si s'escau",
+      "examples": ["Empresa XYZ", "Associació Cultural ABC", "Fundació Món Obert"],
+      "preferencesKey": null
+    },
+    {
+      "label": "DNI / NIF / Pass. / T. R.",
+      "description": "Número d'identificació de l'entitat o persona representada",
+      "examples": ["NIF: B12345678", "DNI: 87654321Y", "Passaport: CD9876543"],
+      "preferencesKey": null
+    },
+    {
+      "label": "EXPOSICIÓ DE FETS I RAONS",
+      "description": "Descripció dels fets i raons",
+      "examples": [
+        "Sol·licito un permís per realitzar obres menors.",
+        "A causa de canvis en la normativa, sol·licito la revisió del cas.",
+        "Presento una queixa pel servei rebut."
+      ],
+      "preferencesKey": null
+    },
+    {
+      "label": "PETICIÓ",
+      "description": "Sol·licitud o petició específica",
+      "examples": [
+        "Per obtenir la renovació del permís de residència.",
+        "Demano una cita per a la revisió del cas.",
+        "Sol·licito informació sobre l'expedient."
+      ],
+      "preferencesKey": null
+    },
+    {
+      "label": "DOCUMENTS APORTATS",
+      "description": "Llista de documents adjunts",
+      "examples": [
+        "Còpia del DNI, comprovant de residència, formulari de sol·licitud.",
+        "Certificat d'empadronament, fotocòpia de passaport.",
+        "Informe mèdic, autorització signada."
+      ],
+      "preferencesKey": null
+    },
+    {
+      "label": "Signatura",
+      "description": "Signatura del sol·licitant",
+      "examples": ["Signatura manuscrita", "Signatura digital", "Signatura electrònica"],
+      "preferencesKey": null
+    },
+    {
+      "label": "Lloc i data de la sol·licitud",
+      "description": "Lloc i data de la sol·licitud",
+      "examples": ["Barcelona, 09/11/2024", "Girona, 01/01/2023", "Lleida, 15/06/2022"],
+      "preferencesKey": null
+    }
+  ]
+  

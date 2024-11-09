@@ -1,0 +1,73 @@
+[   {
+        "label": "Nom del centre",
+        "question": "Quin es el nom del centre?",
+        "examples": ["Escola ABC", "Institut XYZ"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Municipi del centre",
+        "question": "A quin municipi es troba el centre?",
+        "examples": ["Barcelona", "Girona"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Dades de l'alumnat per al qual es demana l'ajut",
+        "question": "Quin és el nom complet dels alumnes pels quals es demana la beca?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI de l'alumne",
+        "question": "Quin és el DNI de l'alumne?",
+        "examples": ["12345678A", "87654321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Data de naixement de l'alumne",
+        "question": "Quina és la data de naixement de l'alumne?",
+        "examples": ["01/01/2010", "15/05/2012"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Curs escolar de l'alumne",
+        "question": "Quin és el curs escolar de l'alumne?",
+        "examples": ["3r de Primària", "1r de Secundària"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Dades del pare, mare o tutor/a legal",
+        "question": "Quin és el nom complet del pare, mare o tutor/a legal de l'alumne?",
+        "examples": ["Pere Garcia", "Anna López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI del pare, mare o tutor/a legal",
+        "question": "Quin és el DNI del pare, mare o tutor/a legal de l'alumne?",
+        "examples": ["12345678C", "87654321D"],
+        "preferencesKey": "dni"
+    },
+    {
+        "label": "Data de naixement del pare, mare o tutor/a legal",
+        "question": "Quina és la data de naixement del pare, mare o tutor/a legal de l'alumne?",
+        "examples": ["01/01/1980", "15/05/1982"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Adreça del pare, mare o tutor/a legal",
+        "question": "Quina és l'adreça del pare, mare o tutor/a legal de l'alumne?",
+        "examples": ["Carrer Major, 1", "Avinguda Catalunya, 10"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Codi postal del pare, mare o tutor/a legal",
+        "question": "Quin és el codi postal del pare, mare o tutor/a legal de l'alumne?",
+        "examples": ["08001", "17001"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Relació del responsable amb l'alumne",
+        "question": "Quina és la relació del responsable amb l'alumne?",
+        "examples": ["Pare", "Mare", "Tutor/a legal"],
+        "preferencesKey": null
+    }
+]

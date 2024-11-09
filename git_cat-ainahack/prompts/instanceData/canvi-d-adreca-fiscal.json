@@ -1,0 +1,38 @@
+[
+    {
+        "label": "Nom del contribuent",
+        "question": "Quin és el nom del contribuent?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI del contribuent",
+        "question": "Quin és el DNI del contribuent?",
+        "examples": ["12345678A", "87654321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Nova adreça fiscal",
+        "question": "Quina és la nova adreça fiscal?",
+        "examples": ["Carrer Major, 1", "Avinguda Catalunya, 10"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Codi postal",
+        "question": "Quin és el codi postal?",
+        "examples": ["08001", "17001"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Municipi",
+        "question": "Quin és el municipi?",
+        "examples": ["Barcelona", "Girona"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Província",
+        "question": "Quina és la província?",
+        "examples": ["Barcelona", "Girona"],
+        "preferencesKey": null
+    }
+]

@@ -1,0 +1,38 @@
+[
+    {
+        "label": "Nom del sol·licitant",
+        "question": "Quin és el nom del sol·licitant?",
+        "examples": ["Joan Garcia", "Maria López"],
+        "preferencesKey": null
+    },
+    {
+        "label": "DNI del sol·licitant",
+        "question": "Quin és el DNI del sol·licitant?",
+        "examples": ["12345678A", "87654321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Adreça de l'immoble",
+        "question": "Quina és l'adreça de l'immoble?",
+        "examples": ["Carrer Major, 1", "Avinguda Catalunya, 10"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Referència cadastral",
+        "question": "Quina és la referència cadastral?",
+        "examples": ["1234567AB1234C", "7654321DC4321B"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Motiu de la bonificació",
+        "question": "Quin és el motiu de la bonificació?",
+        "examples": ["Família nombrosa", "Rehabilitació energètica"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Percentatge de bonificació",
+        "question": "Quin és el percentatge de bonificació?",
+        "examples": ["50%", "25%"],
+        "preferencesKey": null
+    }
+]
