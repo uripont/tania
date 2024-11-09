@@ -102,7 +102,7 @@ const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#f0f4f8',
+      backgroundColor: '#f0f0f0',
       paddingTop: height * 0.1,
     },
     contentContainer: {
@@ -128,7 +128,7 @@ const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
       height: buttonSize * 0.8,
       top: height * 0.05,
       right: width * 0.05,
-      backgroundColor: 'red',
+      backgroundColor: '#840808',
       padding: width * 0.02,
       borderRadius: (buttonSize * 0.8) / 2,
       justifyContent: 'center',
@@ -152,13 +152,12 @@ const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
       flexDirection: 'row',
       justifyContent: isWeb ? 'center' : 'space-around', // Center on web, spaced on mobile
       alignItems: 'center',
-      //paddingHorizontal: !isWeb ? width * 0.1 : 0, // Add padding for mobile
     },
     settingsButton: {
       width: buttonSize * 0.8,
       height: buttonSize * 0.8,
       borderRadius: (buttonSize * 0.8) / 2,
-      backgroundColor: '#6200ee',
+      backgroundColor: '#840808',
       justifyContent: 'center',
       alignItems: 'center',
       marginHorizontal: isWeb ? width * 0.02 : 0.5, // Only margin for web
@@ -167,7 +166,7 @@ const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
       width: buttonSize,
       height: buttonSize,
       borderRadius: buttonSize / 2,
-      backgroundColor: '#6200ee',
+      backgroundColor: '#840808',
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: isWeb ? 'center' : 'center', // Centered alignment for mobile
