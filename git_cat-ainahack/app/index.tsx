@@ -2,14 +2,16 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
   useWindowDimensions,
   Platform,
+  Image,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native'; // Mobile Lottie Library
+import { Player } from '@lottiefiles/react-lottie-player'; // Web Lottie library
 import { useNavigate } from '@/hooks/useNavigate';
 
 export default function MainScreen() {
@@ -47,12 +49,21 @@ export default function MainScreen() {
 
       {/* Avatar and Conversation Area */}
       <View style={styles.contentContainer}>
-        {/* Tania's Avatar */}
+        {/* Tania's Animated Avatar */}
         <View style={styles.avatarContainer}>
-          <Image
-            source={{ uri: 'https://via.placeholder.com/80' }}
-            style={styles.avatar}
-          />
+          {isWeb ? (
+            <Image
+              source={{ uri: 'https://placeholder.com/placeholder-image.png' }}
+              style={styles.avatar}
+            />
+          ) : (
+            <LottieView
+              source={require('@/assets/lottieAnimations/Preguntando.json')}
+              autoPlay
+              loop
+              style={styles.avatar}
+            />
+          )}
         </View>
 
         {/* Conversation Area */}
@@ -95,9 +106,9 @@ export default function MainScreen() {
 
 // Function to generate responsive styles based on screen dimensions and platform
 const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
-  const avatarSize = isWeb ? width * 0.2 : width * 0.35; // Larger avatar size for mobile
-  const buttonSize = isWeb ? width * 0.05 : width * 0.15; // Larger button size for mobile
-  const fontSize = isWeb ? width * 0.015 : width * 0.045; // Larger font size for mobile
+  const avatarSize = isWeb ? width * 0.2 : width * 0.35;
+  const buttonSize = isWeb ? width * 0.05 : width * 0.15;
+  const fontSize = isWeb ? width * 0.015 : width * 0.045;
 
   return StyleSheet.create({
     container: {
@@ -120,7 +131,6 @@ const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
     avatar: {
       width: avatarSize,
       height: avatarSize,
-      borderRadius: avatarSize / 2,
     },
     plusButton: {
       position: 'absolute',
@@ -150,7 +160,7 @@ const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
       left: 0,
       right: isWeb ? 0 : width * 0.3,
       flexDirection: 'row',
-      justifyContent: isWeb ? 'center' : 'space-around', // Center on web, spaced on mobile
+      justifyContent: isWeb ? 'center' : 'space-around',
       alignItems: 'center',
     },
     settingsButton: {
@@ -160,7 +170,7 @@ const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
       backgroundColor: '#840808',
       justifyContent: 'center',
       alignItems: 'center',
-      marginHorizontal: isWeb ? width * 0.02 : 0.5, // Only margin for web
+      marginHorizontal: isWeb ? width * 0.02 : 0.5,
     },
     microphoneButton: {
       width: buttonSize,
@@ -169,7 +179,7 @@ const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
       backgroundColor: '#840808',
       justifyContent: 'center',
       alignItems: 'center',
-      alignSelf: isWeb ? 'center' : 'center', // Centered alignment for mobile
+      alignSelf: isWeb ? 'center' : 'center',
     },
   });
 };
