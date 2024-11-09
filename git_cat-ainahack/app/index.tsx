@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { useSpeechToText } from '@/hooks/useSpeechToText';
 import {STAGE1_PROMPT, STAGE1_PROMPT_END} from '@/prompts/stage1Prompt';
 import { useTaniaStateReactive, useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
+import useTextInstructModel from '@/hooks/useTextInstructModel';
 
 export default function MainScreen() {
   const { navigateTo } = useNavigate();
@@ -32,11 +33,15 @@ export default function MainScreen() {
     stopRecording
   } = useSpeechToText();
 
-  //Step 0: In the beginning, Tania is waiting for user audio
   const isWaitingForUserInput = useTaniaStateReactive('isWaitingForUserInput');
   const setTaniaMode = useTaniaStateAction('setTaniaMode');
   const setIsWaitingForUserInput = useTaniaStateAction('setIsWaitingForUserInput');
-  
+  const taniaMode = useTaniaStateReactive('taniaMode');
+
+  //Hooks that keep listening to state mode changes
+  useTextInstructModel(taniaMode); // Hook it up here
+
+
   const handleMicPress = async () => {
     if (!isWaitingForUserInput) {
       return; // Early return if we're not expecting user input
@@ -51,6 +56,13 @@ export default function MainScreen() {
       await startRecording();
     }
   };
+
+  useEffect(() => {
+    if (taniaMode === 'Waiting') {
+      setIsWaitingForUserInput(true); //Open mic button right after talking
+    }
+  }, [taniaMode]);
+
 
   const handleSettingsPress = () => {
     navigateTo('settings', 'push');

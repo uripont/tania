@@ -1,16 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ENV from '@/config';
 import { useTaniaStateReactive, getTaniaStateValue, useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
 import { TaniaPhase } from '@/state/stores/tania/taniaState';
 import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
+import { createLogger } from '@/utils/logger';
 
-const useTextInstructModel = () => {
+const useTextInstructModel = (taniaMode: string) => {
+  const isFirstRender = useRef(true);
+
   const [response, setResponse] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | unknown>(null);
 
+  const logger = createLogger('useTextInstructModel');
+
   // Get actions
+  const setTaniaMode = useTaniaStateAction('setTaniaMode');
   const addMessage = useTaniaStateAction('addMessage');
+
+  // Mode change listener
+  // const taniaMode = useTaniaStateReactive('taniaMode');
 
   // Core query function
   const query = async (prompt: string) => {
@@ -57,6 +66,7 @@ const useTextInstructModel = () => {
 
   // Phase-specific handlers
   const handleFormSelection = async (transcription: string) => {
+    logger.info('Handling form selection:', transcription);
     const prompt = `${STAGE1_PROMPT}${transcription}${STAGE1_PROMPT_END}`;
     const response = await query(prompt);
     addMessage({
@@ -73,7 +83,7 @@ const useTextInstructModel = () => {
       content: response,
       type: 'system',
     });
-    
+    setTaniaMode('Talking');
     return response;
   };
 
@@ -94,11 +104,15 @@ const useTextInstructModel = () => {
     return newQuestionResponse;
   };
 
-  // Mode change listener
-  const taniaMode = useTaniaStateReactive('taniaMode');
-
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // Ignore reacting to initial render
+    }
+
+    logger.info('Tania mode changed:', taniaMode);
     if (taniaMode === 'Thinking') {
+      logger.info('Tania is thinking...');
       const currentPhase = getTaniaStateValue('phase');
       const lastMessage = getTaniaStateValue('lastMessage');
       
