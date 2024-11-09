@@ -6,10 +6,6 @@ import { Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-import {
-  setPreference,
-  getPreference,
-} from '@/state/config/preferencesStorage';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -21,18 +17,6 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
-  const testSavePreference = async () => {
-    await setPreference('nom', 'Alex');
-  };
-
-  const testGetPreference = async () => {
-    const nom = await getPreference('nom');
-    console.log('Nom:', nom);
-  };
-
-  testSavePreference();
-  testGetPreference();
 
   return (
     <Tabs
