@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { TaniaState, TaniaPhase, TaniaMode } from './taniaState';
 import { taniaStateLogger } from './taniaMiddleware';
+import { SAVABLE_FIELDS } from '@/constants/PreferencesFields';
 
 const initialPhase: TaniaPhase = 'FormSelection';
 const initialTaniaMode: TaniaMode = 'Listening';
