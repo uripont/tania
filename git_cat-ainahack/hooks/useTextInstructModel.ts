@@ -6,7 +6,7 @@ const useTextInstructModel = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | unknown>(null);
 
-  const query = async (data: any) => {
+  const query = async (data: any, prompt: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -28,11 +28,16 @@ const useTextInstructModel = () => {
       const json = await result.json();
       
       console.log("Got response");
-      console.log(json);
       
       // Extract generated_text from the response
       if (Array.isArray(json) && json.length > 0 && json[0].generated_text) {
-        setResponse(json[0].generated_text);
+        let generatedText = json[0].generated_text;
+        // Remove the prompt from the generated text
+        if (generatedText.startsWith(prompt)) {
+          generatedText = generatedText.slice(prompt.length).trim();
+        }
+        console.log("Generated text:", generatedText);
+        setResponse(generatedText);
       } else {
         throw new Error('Unexpected response format');
       }
