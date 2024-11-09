@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native'; // Mobile Lottie Library
 import { useNavigate } from '@/hooks/useNavigate';
-import animationData from '@/assets/lottieAnimations/Preguntando.json'; // Import JSON directly
+import animations from '@/constants/Animations'; // Import animations array
 
 export default function MainScreen() {
   const { navigateTo } = useNavigate();
@@ -60,12 +60,12 @@ export default function MainScreen() {
             <WebPlayer
               autoplay
               loop
-              src={animationData} // Use imported JSON directly
+              src={animations[0]} // Select animation by index
               style={styles.avatar}
             />
           ) : (
             <LottieView
-              source={require('@/assets/lottieAnimations/Preguntando.json')}
+              source={animations[0]}
               autoPlay
               loop
               style={styles.avatar}
