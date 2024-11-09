@@ -3,6 +3,7 @@ import { View, Button, Text, ScrollView, ActivityIndicator, StyleSheet } from 'r
 import { useSpeechToText } from '@/hooks/useSpeechToText';
 import useTextInstructModel from '@/hooks/useTextInstructModel';
 import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
+import { useInstanceSearch } from '@/hooks/useInstanceSearch';
 
 const Main = () => {
   const { 
@@ -31,6 +32,8 @@ const Main = () => {
     }
   }, [textInstruct.response]);
 
+  const { matchedInstances, isSearching } = useInstanceSearch(displayedInstruction);
+
   const handleStartRecording = async () => {
     setDisplayedTranscription(null);
     setDisplayedInstruction(null);
@@ -53,6 +56,14 @@ const Main = () => {
         <Text style={styles.label}>Instruction:</Text>
         <Text style={styles.content}>
           {displayedInstruction || 'Waiting for response...'}
+        </Text>
+
+        <Text style={styles.label}>Detected Instance Type:</Text>
+        <Text style={styles.content}>
+          {isSearching ? 'Searching...' : 
+           matchedInstances.length > 0 ? 
+           matchedInstances.join(', ') : 
+           'No instance type detected'}
         </Text>
       </ScrollView>
 

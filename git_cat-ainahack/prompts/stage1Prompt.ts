@@ -1,10 +1,9 @@
+import { TIPUS_INSTANCIES } from '@/prompts/instanceTypes';
+
 export const STAGE1_PROMPT = `
 La teva feina serà ajudar a usuaris a triar la instància administrativa més adequada segons la seva situació.
 
-TIPUS D’INSTÀNCIES:
-1- INSTÀNCIA GENÈRICA.
-2- INSTÀNCIA BECA MENJADOR.
-3- INSTÀNCIA DUPLICAT DE CERTIFICAT.
+${TIPUS_INSTANCIES}
 
 Llegeix atentament la descripció de cada instància que t’he donat. Cada instància administrativa serveix per a un propòsit específic, així que és important que entenguis quin problema resol cadascuna. Quan l’usuari descrigui un problema o una necessitat, pensa en quina instància s’ajusta millor a la seva situació. Fes-ho a partir dels detalls que t’ofereix l’usuari, identificant el tipus d’ajuda o servei que demana.
 
