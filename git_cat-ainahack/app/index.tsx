@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,9 +13,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native'; // Mobile Lottie Library
 import { Player } from '@lottiefiles/react-lottie-player'; // Web Lottie library
 import { useNavigate } from '@/hooks/useNavigate';
-import { UserMessage } from '@/components/UserMessage';
-import { SystemMessage } from '@/components/SystemMessage';
-import { EditableSystemOutput } from '@/components/EditableSystemOutput';
+import { MessageList }  from '@/components/MessageList';
 import { useState } from 'react';
 import { useSpeechToText } from '@/hooks/useSpeechToText';
 import {STAGE1_PROMPT, STAGE1_PROMPT_END} from '@/prompts/stage1Prompt';
@@ -171,11 +169,7 @@ export default function MainScreen() {
         </View>
 
         {/* Conversation Area */}
-        <ScrollView 
-          style={styles.scrollView}
-          contentContainerStyle={styles.conversationArea}
-        >
-        </ScrollView>
+        <MessageList />
 
         <TouchableOpacity 
           style={[
