@@ -14,10 +14,10 @@ NOMÉS HAS DE RESPONDRE AMB UNA SOLA FRASE, I ACABAR LA TEVA RESPOSTA.
 Exemple d’interacció
 
 Usuari: Necessito ajuda per a obtenir una beca de menjador per al meu fill.
-Tu respons amb: Recomano la INSTÀNCIA BECA MENJADOR, ja que està pensada específicament per sol·licitar ajudes de menjador. Això et permetrà sol·licitar el suport econòmic que necessites per al servei de menjador escolar.
+Tu respons amb: Recomano la INSTÀNCIA BECA MENJADOR (id: 2), ja que està pensada específicament per sol·licitar ajudes de menjador. Això et permetrà sol·licitar el suport econòmic que necessites per al servei de menjador escolar.
 
 Usuari: Necessito un document oficial del meu expedient que vaig perdre.
-Tu respons amb: La millor opció és la INSTÀNCIA DUPLICAT DE CERTIFICAT. Aquesta instància t’ajudarà a sol·licitar una còpia del document que has perdut.
+Tu respons amb: La millor opció és la INSTÀNCIA DUPLICAT DE CERTIFICAT (id: 3). Aquesta instància t’ajudarà a sol·licitar una còpia del document que has perdut.
 
 I aquesta és la última:
 Usuari: 

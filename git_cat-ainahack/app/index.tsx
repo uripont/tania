@@ -19,22 +19,12 @@ import {
   useTaniaStateReactive,
   useTaniaStateAction,
 } from '@/state/stores/tania/taniaSelector';
-import {
-  useAnimationStateReactive,
-  useAnimationStateAction,
-} from '@/state/stores/animationManager/animationSelector';
 import useTextInstructModel from '@/hooks/useTextInstructModel';
 import useTextToSpeech from '@/hooks/useTextToSpeech';
 import animations from '@/constants/Animations'; // Import animations array
 
 export default function MainScreen() {
   const { navigateTo } = useNavigate();
-  const currentAnimationIndex = useAnimationStateReactive(
-    'currentAnimationIndex'
-  );
-  const setCurrentAnimationIndex = useAnimationStateAction(
-    'setCurrentAnimationIndex'
-  );
   const { width, height } = useWindowDimensions(); // Responsive dimensions
   const isWeb = Platform.OS === 'web';
 
@@ -69,12 +59,10 @@ export default function MainScreen() {
 
     if (isRecording) {
       setTaniaMode('Transcribing'); // Will trigger transcribing hook
-      setCurrentAnimationIndex(2); // Set Tania to idle animation
       setIsWaitingForUserInput(false); // Will make button disabled
       await stopRecording();
     } else {
       setTaniaMode('Listening'); // Set Tania to listening mode
-      setCurrentAnimationIndex(1); // Set Tania to listening animation
       await startRecording();
     }
   };
@@ -89,6 +77,88 @@ export default function MainScreen() {
     navigateTo('settings', 'push');
   };
 
+  const handleNewConversation = () => {
+    console.log('New conversation started');
+  };
+
+  // Function to generate responsive styles based on screen dimensions and platform
+  const getResponsiveStyles = (
+    width: number,
+    height: number,
+    isWeb: boolean
+  ) => {
+    const avatarSize = isWeb ? width * 0.2 : width * 0.35;
+    const buttonSize = isWeb ? width * 0.05 : width * 0.15;
+    const fontSize = isWeb ? width * 0.015 : width * 0.045;
+
+    return StyleSheet.create({
+      container: {
+        flex: 1,
+        backgroundColor: '#f0f0f0',
+        paddingTop: height * 0.1,
+      },
+      contentContainer: {
+        flex: 1,
+        width: '100%',
+      },
+      avatarContainer: {
+        alignItems: 'center',
+        padding: 15,
+        bottom: 15,
+      },
+      avatar: {
+        width: 150,
+        height: 150,
+      },
+      plusButton: {
+        position: 'absolute',
+        width: buttonSize * 0.8,
+        height: buttonSize * 0.8,
+        top: height * 0.05,
+        right: width * 0.05,
+        backgroundColor: '#840808',
+        padding: width * 0.02,
+        borderRadius: (buttonSize * 0.8) / 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      scrollView: {
+        flex: 1,
+      },
+      conversationArea: {
+        paddingVertical: 16,
+      },
+      bottomControls: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 16,
+        backgroundColor: '#f5f5f5',
+        borderTopWidth: 1,
+        borderTopColor: '#e0e0e0',
+      },
+      settingsButton: {
+        padding: 8,
+        borderRadius: 20,
+        backgroundColor: '#840808',
+      },
+      microphoneButton: {
+        width: buttonSize,
+        height: buttonSize,
+        marginBottom: 16,
+        borderRadius: buttonSize / 2,
+        backgroundColor: '#840808',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: isWeb ? 'center' : 'center',
+      },
+      microphoneButtonDisabled: {
+        backgroundColor: '#cccccc',
+        opacity: 0.2,
+      },
+    });
+  };
+
   const styles = getResponsiveStyles(width, height, isWeb);
 
   return (
@@ -101,12 +171,12 @@ export default function MainScreen() {
             <WebPlayer
               autoplay
               loop
-              src={animations[currentAnimationIndex]} // Select animation by index
+              src={animations[0]} // Select animation by index
               style={styles.avatar}
             />
           ) : (
             <LottieView
-              source={animations[currentAnimationIndex]} // Select animation by index
+              source={animations[0]}
               autoPlay
               loop
               style={styles.avatar}
@@ -145,98 +215,10 @@ export default function MainScreen() {
               color="#fff"
             />
           </TouchableOpacity>
+
+          {/* Add remaining bottom controls here */}
         </View>
       </View>
     </View>
   );
 }
-
-// Function to generate responsive styles based on screen dimensions and platform
-const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
-  const avatarSize = isWeb ? width * 0.2 : width * 0.5;
-  const buttonSize = isWeb ? width * 0.05 : width * 0.15;
-  const fontSize = isWeb ? width * 0.015 : width * 0.045;
-
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#f0f0f0',
-      paddingTop: height * 0.1,
-    },
-    contentContainer: {
-      flexGrow: 1,
-      flexDirection: isWeb && width > 800 ? 'row' : 'column',
-      alignItems: 'center',
-      justifyContent: isWeb && width > 800 ? 'space-around' : 'center',
-      paddingHorizontal: width * 0.05,
-      marginBottom: height * 0.1,
-    },
-    avatarContainer: {
-      alignItems: 'center',
-      marginTop: height * 0.02,
-    },
-    avatar: {
-      width: avatarSize,
-      height: avatarSize,
-    },
-    plusButton: {
-      position: 'absolute',
-      width: buttonSize * 0.8,
-      height: buttonSize * 0.8,
-      top: height * 0.05,
-      right: width * 0.05,
-      backgroundColor: '#840808',
-      padding: width * 0.02,
-      borderRadius: (buttonSize * 0.8) / 2,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    scrollView: {
-      flex: 1,
-    },
-    conversationArea: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexGrow: 1,
-    },
-    conversationText: {
-      fontSize: fontSize,
-      color: '#555',
-      textAlign: 'center',
-    },
-    bottomControls: {
-      bottom: height * 0.1,
-      left: 0,
-      right: isWeb ? 0 : width * 0.3,
-      flexDirection: 'row',
-      justifyContent: isWeb ? 'center' : 'space-around',
-      alignItems: 'center',
-    },
-    settingsButton: {
-      width: buttonSize * 0.8,
-      height: buttonSize * 0.8,
-      top: isWeb ? height * 0.45 : height * 0.1,
-      right: isWeb ? width * 0.6 : width * 0.3,
-      borderRadius: (buttonSize * 0.8) / 2,
-      backgroundColor: '#840808',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: isWeb ? width * 0.02 : 0.5,
-    },
-    microphoneButton: {
-      width: buttonSize,
-      height: buttonSize,
-      top: isWeb ? height * 0.3 : height * 0.05,
-      right: isWeb ? width * 0.35 : 0.0,
-      borderRadius: buttonSize / 2,
-      backgroundColor: '#840808',
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-    },
-    microphoneButtonDisabled: {
-      backgroundColor: '#cccccc',
-      opacity: 0.2,
-    },
-  });
-};

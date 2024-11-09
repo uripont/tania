@@ -1,7 +1,12 @@
 import { create } from 'zustand';
-import { TaniaState, TaniaPhase, TaniaMode } from './taniaState';
+import {
+  TaniaState,
+  TaniaPhase,
+  TaniaMode,
+  Message,
+  FormElement,
+} from './taniaState';
 import { taniaStateLogger } from './taniaMiddleware';
-import { Message } from './taniaState';
 
 const initialPhase: TaniaPhase = 'FormSelection';
 const initialTaniaMode: TaniaMode = 'Waiting';
@@ -11,10 +16,20 @@ export const useTaniaStore = create<TaniaState>(
     (set: (partial: Partial<TaniaState>) => void, get: () => TaniaState) => ({
       phase: initialPhase,
       taniaMode: initialTaniaMode,
+
       voice: 'elia',
       accent: 'central',
       type: 'text',
-      isWaitingForUserInput: true,
+
+      isWaitingForUserInput: false,
+      messages: [],
+      lastMessage: '',
+
+      selectedInstance: null,
+
+      // Form elements queue state
+      formElementsQueue: [],
+
       setPhase: (phase: TaniaPhase) => set({ phase }),
 
       setTaniaMode: (mode: TaniaMode) => set({ taniaMode: mode }),
@@ -26,16 +41,8 @@ export const useTaniaStore = create<TaniaState>(
 
       setAccent: (accent: string) => set({ accent }),
 
-      messages: ['Bon dia, soc la Tània, que puc fer per tu avui?'].map(
-        (content) => ({
-          id: Math.random().toString(36),
-          content,
-          type: 'system',
-          timestamp: Date.now(),
-        })
-      ),
-
-      lastMessage: '',
+      setSelectedInstance: (instance: string | null) =>
+        set({ selectedInstance: instance }),
 
       addMessage: (message: Omit<Message, 'id' | 'timestamp'>) =>
         set({
@@ -56,6 +63,17 @@ export const useTaniaStore = create<TaniaState>(
             msg.id === id ? { ...msg, content } : msg
           ),
         }),
+
+      // Form elements queue methods
+      setFormElementsQueue: (elements: FormElement[]) =>
+        set({ formElementsQueue: elements }),
+
+      dequeueFormElement: () =>
+        set((state) => ({
+          formElementsQueue: state.formElementsQueue.slice(1),
+        })),
+
+      getCurrentFormElement: () => get().formElementsQueue[0],
     })
   )
 );
