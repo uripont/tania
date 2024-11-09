@@ -1,5 +1,11 @@
 import { create } from 'zustand';
-import { TaniaState, TaniaPhase, TaniaMode, Message, FormElement } from './taniaState';
+import {
+  TaniaState,
+  TaniaPhase,
+  TaniaMode,
+  Message,
+  FormElement,
+} from './taniaState';
 import { taniaStateLogger } from './taniaMiddleware';
 
 const initialPhase: TaniaPhase = 'FormSelection';
@@ -17,10 +23,10 @@ export const useTaniaStore = create<TaniaState>(
 
       isWaitingForUserInput: false,
       messages: [],
-      lastMessage: "",
+      lastMessage: '',
 
       selectedInstance: null,
-      
+
       // Form elements queue state
       formElementsQueue: [],
 
@@ -28,13 +34,15 @@ export const useTaniaStore = create<TaniaState>(
 
       setTaniaMode: (mode: TaniaMode) => set({ taniaMode: mode }),
 
-      setIsWaitingForUserInput: (isWaiting: boolean) => set({ isWaitingForUserInput: isWaiting }),
+      setIsWaitingForUserInput: (isWaiting: boolean) =>
+        set({ isWaitingForUserInput: isWaiting }),
 
       setVoice: (voice: string) => set({ voice }),
 
       setAccent: (accent: string) => set({ accent }),
 
-      setSelectedInstance: (instance: string | null) => set({ selectedInstance: instance }),
+      setSelectedInstance: (instance: string | null) =>
+        set({ selectedInstance: instance }),
 
       addMessage: (message: Omit<Message, 'id' | 'timestamp'>) =>
         set({
@@ -57,11 +65,13 @@ export const useTaniaStore = create<TaniaState>(
         }),
 
       // Form elements queue methods
-      setFormElementsQueue: (elements: FormElement[]) => 
+      setFormElementsQueue: (elements: FormElement[]) =>
         set({ formElementsQueue: elements }),
 
       dequeueFormElement: () =>
-        set((state) => ({ formElementsQueue: state.formElementsQueue.slice(1) })),
+        set((state) => ({
+          formElementsQueue: state.formElementsQueue.slice(1),
+        })),
 
       getCurrentFormElement: () => get().formElementsQueue[0],
     })

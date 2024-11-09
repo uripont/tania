@@ -11,11 +11,14 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native'; // Mobile Lottie Library
 import { useNavigate } from '@/hooks/useNavigate';
-import { MessageList }  from '@/components/MessageList';
+import { MessageList } from '@/components/MessageList';
 import { useState } from 'react';
 import { useSpeechToText } from '@/hooks/useSpeechToText';
-import {STAGE1_PROMPT, STAGE1_PROMPT_END} from '@/prompts/stage1Prompt';
-import { useTaniaStateReactive, useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
+import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
+import {
+  useTaniaStateReactive,
+  useTaniaStateAction,
+} from '@/state/stores/tania/taniaSelector';
 import useTextInstructModel from '@/hooks/useTextInstructModel';
 import useTextToSpeech from '@/hooks/useTextToSpeech';
 import animations from '@/constants/Animations'; // Import animations array
@@ -30,30 +33,30 @@ export default function MainScreen() {
   if (isWeb) {
     WebPlayer = require('@lottiefiles/react-lottie-player').Player;
   }
-  const [messages, setMessages] = useState<Array<{ type: 'user' | 'system', text: string }>>([]);
-  const [displayedTranscription, setDisplayedTranscription] = useState<string>('');
-  const {
-    isRecording,
-    transcription,
-    startRecording,
-    stopRecording
-  } = useSpeechToText();
+  const [messages, setMessages] = useState<
+    Array<{ type: 'user' | 'system'; text: string }>
+  >([]);
+  const [displayedTranscription, setDisplayedTranscription] =
+    useState<string>('');
+  const { isRecording, transcription, startRecording, stopRecording } =
+    useSpeechToText();
 
   const isWaitingForUserInput = useTaniaStateReactive('isWaitingForUserInput');
   const setTaniaMode = useTaniaStateAction('setTaniaMode');
-  const setIsWaitingForUserInput = useTaniaStateAction('setIsWaitingForUserInput');
+  const setIsWaitingForUserInput = useTaniaStateAction(
+    'setIsWaitingForUserInput'
+  );
   const taniaMode = useTaniaStateReactive('taniaMode');
 
   //Hooks that keep listening to state mode changes
   useTextInstructModel(); // Hook it up here
   useTextToSpeech(); // Hook it up here
 
-
   const handleMicPress = async () => {
     if (!isWaitingForUserInput) {
       return; // Early return if we're not expecting user input
     }
-    
+
     if (isRecording) {
       setTaniaMode('Transcribing'); // Will trigger transcribing hook
       setIsWaitingForUserInput(false); // Will make button disabled
@@ -70,7 +73,6 @@ export default function MainScreen() {
     }
   }, [taniaMode]);
 
-
   const handleSettingsPress = () => {
     navigateTo('settings', 'push');
   };
@@ -80,7 +82,11 @@ export default function MainScreen() {
   };
 
   // Function to generate responsive styles based on screen dimensions and platform
-  const getResponsiveStyles = (width: number, height: number, isWeb: boolean) => {
+  const getResponsiveStyles = (
+    width: number,
+    height: number,
+    isWeb: boolean
+  ) => {
     const avatarSize = isWeb ? width * 0.2 : width * 0.35;
     const buttonSize = isWeb ? width * 0.05 : width * 0.15;
     const fontSize = isWeb ? width * 0.015 : width * 0.045;
@@ -98,7 +104,7 @@ export default function MainScreen() {
       avatarContainer: {
         alignItems: 'center',
         padding: 15,
-        bottom: 15
+        bottom: 15,
       },
       avatar: {
         width: 150,
@@ -151,13 +157,12 @@ export default function MainScreen() {
         opacity: 0.2,
       },
     });
-  }
+  };
 
   const styles = getResponsiveStyles(width, height, isWeb);
 
   return (
     <View style={styles.container}>
-
       {/* Avatar and Conversation Area */}
       <View style={styles.contentContainer}>
         {/* Tania's Animated Avatar */}
@@ -182,19 +187,19 @@ export default function MainScreen() {
         {/* Conversation Area */}
         <MessageList />
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[
             styles.microphoneButton,
             isRecording && styles.microphoneButton,
-            !isWaitingForUserInput && styles.microphoneButtonDisabled
+            !isWaitingForUserInput && styles.microphoneButtonDisabled,
           ]}
           onPress={handleMicPress}
           disabled={!isWaitingForUserInput}
         >
           <MaterialIcons
-            name={isRecording ? "stop" : "mic"}
+            name={isRecording ? 'stop' : 'mic'}
             size={isWeb ? width * 0.03 : width * 0.06}
-            color={isWaitingForUserInput ? "#fff" : "#999"}
+            color={isWaitingForUserInput ? '#fff' : '#999'}
           />
         </TouchableOpacity>
 
@@ -210,10 +215,10 @@ export default function MainScreen() {
               color="#fff"
             />
           </TouchableOpacity>
-          
+
           {/* Add remaining bottom controls here */}
         </View>
       </View>
     </View>
   );
-};
+}

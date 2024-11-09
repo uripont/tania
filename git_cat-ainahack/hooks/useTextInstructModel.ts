@@ -1,15 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import ENV from '@/config';
-import { useTaniaStateReactive, getTaniaStateValue, useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
+import {
+  useTaniaStateReactive,
+  getTaniaStateValue,
+  useTaniaStateAction,
+} from '@/state/stores/tania/taniaSelector';
 import { TaniaPhase } from '@/state/stores/tania/taniaState';
 import { STAGE1_PROMPT, STAGE1_PROMPT_END } from '@/prompts/stage1Prompt';
-import { STAGE_2_PROMPT_START, STAGE_2_PROMPT_QUESTION } from '@/prompts/stage2';
+import {
+  STAGE_2_PROMPT_START,
+  STAGE_2_PROMPT_QUESTION,
+} from '@/prompts/stage2';
 import { createLogger } from '@/utils/logger';
-import {LLISTA_INSTANCIES} from '@/prompts/instanceTypes';
+import { LLISTA_INSTANCIES } from '@/prompts/instanceTypes';
 import { FormElement } from '@/state/stores/tania/taniaState';
-import {getStage2_6PromptStart} from '@/prompts/stage6';
-import {getInstanceData} from '@/prompts/instanceTypes';
-
+import { getStage2_6PromptStart } from '@/prompts/stage6';
+import { getInstanceData } from '@/prompts/instanceTypes';
 
 const useTextInstructModel = () => {
   const isFirstRender = useRef(true);
@@ -33,7 +39,7 @@ const useTextInstructModel = () => {
   const taniaMode = useTaniaStateReactive('taniaMode');
 
   // Core query function
-  const query = async (prompt: string, max_new_tokens: number ) => {
+  const query = async (prompt: string, max_new_tokens: number) => {
     setLoading(true);
     setError(null);
     try {
@@ -51,12 +57,12 @@ const useTextInstructModel = () => {
           inputs: prompt,
           parameters: {
             max_new_tokens: max_new_tokens,
-          }
+          },
         }),
       });
 
       const json = await result.json();
-      
+
       if (Array.isArray(json) && json.length > 0 && json[0].generated_text) {
         // Remove original prompt if it appears at the start of response
         let cleanResponse = json[0].generated_text;
@@ -77,55 +83,55 @@ const useTextInstructModel = () => {
 
   // Phase-specific handlers
   const handleFormSelection = async (transcription: string) => {
-    logger.info('Handling form selection:', transcription);  
-    
+    logger.info('Handling form selection:', transcription);
+
     const prompt = `${STAGE1_PROMPT}${transcription}${STAGE1_PROMPT_END}`;
     const response = await query(prompt, 65);
     addMessage({
-        content: response,
-        type: 'system',
+      content: response,
+      type: 'system',
     });
-    
+
     const idPattern = /\(id:\s*(\d{1,2})\)/;
     const match = response.match(idPattern);
-    
+
     logger.info('Regex match result:', match);
 
     if (match && match[1]) {
       const idNumber = match[1];
       logger.info('Found ID:', idNumber);
-      
-      const matchedInstance = LLISTA_INSTANCIES.find(instance => 
+
+      const matchedInstance = LLISTA_INSTANCIES.find((instance) =>
         instance.startsWith(match[0])
       );
-      
+
       if (matchedInstance) {
         logger.info('Matched instance:', matchedInstance);
-        
+
         // Get form elements and set queue
         const instanceElements = getInstanceElements(matchedInstance);
         setFormElementsQueue(instanceElements);
         setSelectedInstance(matchedInstance);
-        
+
         setPhase('FormQuestion');
         setTaniaMode('Talking');
-        
+
         // Handle first element immediately
         handleFormQuestion();
         return response;
       }
     }
-    
+
     logger.info('No matched instances found');
     return response;
   };
 
   const getInstanceElements = (instanceId: string): FormElement[] => {
     logger.info('Getting elements for instance:', instanceId);
-    
+
     try {
       const instanceData = getInstanceData(instanceId);
-      
+
       // Ensure instanceData is an object with the expected structure
       if (typeof instanceData !== 'object' || !instanceData) {
         logger.error('Invalid instance data format');
@@ -140,14 +146,13 @@ const useTextInstructModel = () => {
             id: key,
             label: data.label as string,
             question: (data as any).type || 'text',
-            examples: (data as any).examples || ''
+            examples: (data as any).examples || '',
           });
         }
       }
 
       logger.info('Created form elements:', formElements);
       return formElements;
-      
     } catch (error) {
       logger.error('Error getting instance elements:', error);
       return [];
@@ -170,10 +175,10 @@ const useTextInstructModel = () => {
     }
     addMessage({
       content: response,
-      type: 'system'
+      type: 'system',
     });
     setPhase('FormAnswer');
-  
+
     return response;
   };
 
@@ -181,21 +186,25 @@ const useTextInstructModel = () => {
     const currentElement = getCurrentFormElement();
     if (!currentElement) return;
 
-    const prompt = getStage2_6PromptStart(currentElement.label, '', transcription);
+    const prompt = getStage2_6PromptStart(
+      currentElement.label,
+      '',
+      transcription
+    );
     const response = await query(prompt, 10);
 
     logger.info('Form answer');
 
     addMessage({
       content: response,
-      type: 'editable-system'
+      type: 'editable-system',
     });
 
     logger.info('Form answer response:', response);
 
     // Move to next element
     dequeueFormElement();
-    
+
     // Check if more elements exist
     const nextElement = getCurrentFormElement();
     setTaniaMode('Thinking');
@@ -221,7 +230,7 @@ const useTextInstructModel = () => {
       logger.info('Tania is thinking...');
       const currentPhase = getTaniaStateValue('phase');
       const lastMessage = getTaniaStateValue('lastMessage');
-      
+
       const phaseHandlers: Record<TaniaPhase, () => Promise<string>> = {
         FormSelection: () => handleFormSelection(lastMessage),
         FormQuestion: () => handleFormQuestion(),

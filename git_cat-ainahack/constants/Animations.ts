@@ -1,8 +1,8 @@
-import preguntando from '@/assets/lottieAnimations/Preguntando.json';
-import escuchando from '@/assets/lottieAnimations/Escuchando.json';
-import pensando from '@/assets/lottieAnimations/Pensando.json';
-import hablando from '@/assets/lottieAnimations/Hablando.json';
+import waiting from '@/assets/lottieAnimations/Preguntando.json';
+import listenning from '@/assets/lottieAnimations/Escuchando.json';
+import thinking from '@/assets/lottieAnimations/Pensando.json';
+import talking from '@/assets/lottieAnimations/Hablando.json';
 
-const animations = [preguntando, escuchando, pensando, hablando];
+const animations = [waiting, listenning, thinking, talking];
 
 export default animations;
