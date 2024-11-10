@@ -9,20 +9,16 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigate } from '@/hooks/useNavigate';
-import {
-  useTaniaStateReactive,
-  getTaniaStateValue,
-  useTaniaStateAction,
-} from '@/state/stores/tania/taniaSelector';
+import { useTaniaStateReactive, getTaniaStateValue, useTaniaStateAction } from '@/state/stores/tania/taniaSelector';
 
 import { createLogger } from '@/utils/logger';
 
 // First define the dialect mappings
 const dialectVoiceMap = {
-  Central: { voice: 'elia', accent: 'central' },
-  Valencià: { voice: 'Gina', accent: 'valencia' },
-  Balear: { voice: 'olga', accent: 'balear' },
-  'Nord-occidental': { voice: 'emma', accent: 'nord-occidental' },
+  'Central': { voice: 'elia', accent: 'central' },
+  'Valencià': { voice: 'Gina', accent: 'valencia' },
+  'Balear': { voice: 'olga', accent: 'balear' },
+  'Nord-occidental': { voice: 'emma', accent: 'nord-occidental' }
 } as const;
 
 const dialectOptions = ['Central', 'Valencià', 'Balear', 'Nord-occidental'];
@@ -33,31 +29,29 @@ const Settings = () => {
   const { goBack } = useNavigate(); // Use a custom hook to navigate back
 
   const logger = createLogger('Settings');
-
+  
   // Get current voice/accent from TaniaState
   const currentVoice = useTaniaStateReactive('voice');
   const currentAccent = useTaniaStateReactive('accent');
-
+  
   // Find initial dialect based on current voice/accent
-  const initialDialect =
-    Object.entries(dialectVoiceMap).find(
-      ([_, value]) =>
-        value.voice === currentVoice && value.accent === currentAccent
-    )?.[0] ?? dialectOptions[0];
-
+  const initialDialect = Object.entries(dialectVoiceMap).find(
+    ([_, value]) => value.voice === currentVoice && value.accent === currentAccent
+  )?.[0] ?? dialectOptions[0];
+  
   const [selectedDialect, setSelectedDialect] = React.useState(initialDialect);
   const setVoice = useTaniaStateAction('setVoice');
   const setAccent = useTaniaStateAction('setAccent');
 
   const handleDialectChange = (dialect: string) => {
     logger.started(`Changing dialect to ${dialect}...`);
-
-    const { voice, accent } =
-      dialectVoiceMap[dialect as keyof typeof dialectVoiceMap];
-
+    
+    const { voice, accent } = dialectVoiceMap[dialect as keyof typeof dialectVoiceMap];
+    
+    
     setVoice(voice); // setVoice('ca_central') === setPhase('ca_central') * setPhase('A');
     setAccent(accent); // setAccent('central') === setPhase('central') * setPhase('A');
-
+    
     setSelectedDialect(dialect);
     logger.success(`Dialect changed successfully to ${dialect}`);
   };
@@ -71,7 +65,7 @@ const Settings = () => {
 
       {/* Dialect Selection Section */}
       <View style={styles.settingItem}>
-        <Text style={styles.settingLabel}>Sellecciona el teu dialecte</Text>
+        <Text style={styles.settingLabel}>Selecciona el teu dialecte</Text>
         <Picker
           selectedValue={selectedDialect}
           style={styles.picker}
@@ -85,7 +79,7 @@ const Settings = () => {
 
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={goBack}>
-        <Text style={styles.backButtonText}>D'acord</Text>
+        <Text style={styles.backButtonText}>Torna</Text>
       </TouchableOpacity>
     </View>
   );
