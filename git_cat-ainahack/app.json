@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "git_cat-ainahack",
+    "name": "Tania (demo)",
     "slug": "git_cat-ainahack",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -43,9 +43,6 @@
     "extra": {
       "router": {
         "origin": false
-      },
-      "eas": {
-        "projectId": "4843e9dd-fb85-4c4d-b713-2265063539b9"
       }
     },
     "owner": "git_cat-ainahack"
