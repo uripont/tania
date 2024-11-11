@@ -38,10 +38,9 @@ L'usuari explica el seu problema amb les seves pròpies paraules via veu. TANIA 
 
 #### 🚀 Però la millor forma d'entendre-ho és veient-ho en acció:
 
-# video here
+https://github.com/user-attachments/assets/c6f253f4-b14b-4489-bb5e-f8f8b01fd434
 
-
-## ❓Per què ja és factible implementar TANIA?
+## ❓Per què ja és factible implementar un sistema com TANIA?
 
 > [!IMPORTANT]
 > En poques paraules: és **més barat** que la solució actual, i és **fàcil d'incorporar** opcionalment als sistemes actuals.
