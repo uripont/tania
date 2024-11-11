@@ -15,11 +15,13 @@
 
 **TANIA** és una demo d'aplicació mòbil i web, representant la visió d'un assistent humanament intel·ligent per a la gestió de tràmits administratius telemàtics.
 
-# image aqui
- 
+![TANIA overview](README_media/TANIA_overview_collage.png) 
+
  La missió de TANIA és **millorar i agilitzar la comunicació entre ciutadania i l'administració pública**, mitjançant l'ús del llenguatge natural (amb tota la seva riquesa de dialectes i d'accents) en una interfície moderna, empàtica i accessible. 
  
  És una demostració de l'existència d'una **nova capa d'interacció entre la ciutadania i l'administració pública**, fins ara inexplorada, que creiem que s'implementarà en un futur proper a les administracions públiques d'arreu del món. Un petit tastet del futur, que ja és possible amb la tecnologia oberta del present.
+
+---
 
 ## 🌟 Funcionalitats
 ### 🔍 **Identificar quin model d'instància s'ha d'emplenar davant d'una situació concreta**.
@@ -50,7 +52,7 @@ https://github.com/user-attachments/assets/c6f253f4-b14b-4489-bb5e-f8f8b01fd434
 
 Pels motius expostas anteriorment, TANIA estalvia temps a dues bandes, tant dels ciutadans com dels treballadors de l'administració.
 
-Fent estimacions conservadores, el cost de mantenir TANIA en recursos computacionals reservats (targetes gràfiques per a l'inferència de models d'IA de codi obert) és de menys de 5€ l'hora. Per exemple, a data d'avui el *hosting* a AWS de 3 NVIDIA L4 costen 0,80€ l'hora, cada una fent de *host* del model de text a parla, de parla a text, i de processament de text, respectivament.
+Fent estimacions conservadores, el cost de mantenir TANIA en recursos computacionals reservats (**targetes gràfiques per a l'inferència de models d'IA de codi obert**) és de menys de 5€ l'hora. Per exemple, a data d'avui el *hosting* a AWS de 3 NVIDIA L4 costen 0,80€ l'hora, cada una fent de *host* del model de text a parla, de parla a text, i de processament de text, respectivament.
 
 Aquests recursos poden gestionar múltiples peticions simultàniament, amb disponibilitat 24/7. Amb optimització de recursos, com per exemple utilitzar les mateixes GPUs per a les TANIA de diferents ajuntaments i administracions (per minimitzar el temps en què aquests recursos no es fan servir), aquest cost quedaria repartit entre totes les agències que la fessin servir (una reducció tranquil·lament d'entre 2x a 10x en el cost per agència/administració).
 
@@ -58,7 +60,7 @@ A més, un mateix nivell de poder computacional s'abarateix dràsticament amb el
 
 I els nous models d'IA són cada cop més eficients, reduint encara més el cost d'inferència.
 
-Combinant aquestes reduccions de cost, el cost de TANIA per cobrir les necessitats de centenars d'ajuntaments i administracions es pot situar tranquil·lament per sota d'1€ l'hora; amb indicatius de que els costos es tornin negligibles durant la propera dècada. Substituïnt desenes, centenars o milers d'hores equivalents de feina humana.
+Combinant aquestes reduccions de cost, el cost de TANIA per cobrir les necessitats de centenars d'ajuntaments i administracions es pot situar tranquil·lament **per sota d'1€ l'hora**; amb indicatius de que **els costos es tornin negligibles durant la propera dècada**. Substituïnt desenes, centenars o milers d'hores equivalents de feina humana.
 
 ### 🔗 Interoperativitat
 
@@ -66,7 +68,7 @@ Combinant aquestes reduccions de cost, el cost de TANIA per cobrir les necessita
 
 L’output de TANIA es genera en format de text estructurat, com la informació que ompliria un formulari telemàtic. Aquesta informació es pot enviar directament a les API o sistemes interns que ja utilitza l’administració pública per gestionar els tràmits, sense cap necessitat de modificar els sistemes existents.
 
-TANIA actua com una “capa externa” o interfície addicional, que no força cap modificació del que ja existeix, només afegir una forma alternativa de fer-los servir.
+TANIA actua com una “capa externa” o interfície addicional, que no força cap modificació del que ja existeix, només afegir una forma alternativa de fer-los servir. **Està dissenyat per ser un "plug-and-play".**
 
 ---
 
@@ -88,9 +90,9 @@ TANIA actua com una “capa externa” o interfície addicional, que no força c
 
 - **📱🖥️ Qualsevol altre tipus de client**, com app VR, smartwatch, TV,...
 - **🗂️📂 Emmagatzematge al núvol**, utilitzant una base de dades triant el proveidor i tipus segons la necessitat.
-- **🧠🗣️ Consum *serverless* de models d'IA**, tant d'alternatives Open Source com Llama, com plataformes de models comercials (OpenAI, Anthropic,...), per pagar per resposta (preu per token).
+- **🧠🗣️ Consum *serverless* de models d'IA**, tant d'alternatives open aource com Llama, com plataformes de models comercials (OpenAI, Anthropic,...), per pagar per resposta (preu per token).
 
-## 🔁 Funcionament de la implementació
+### 🔁 Funcionament de la implementació
 
 ![Arquitectura del sistema](README_media/TANIA_agent_flow.png)
 
