@@ -139,9 +139,44 @@ La creació d'aquests formats enriquits es pot fer tant de forma manual, com aut
 Els *prompts* que guien l'orquestració dels models i les ordres que reben (a `/git_cat-ainahack/prompts/`), guardats com a constants en arxius `.ts`, poden ser editats per ajustar-se al rendiment de diferents models, canviar la forma de funcionar, o fer servir altres idiomes.
 
 ---
-## Replicabilitat: Com provar i fer servir TANIA
 
+## 🧪 Replicabilitat: Com provar TANIA
 
+Per provar TANIA al teu entorn local, s'ha de copiar el codi font, compilar-lo a les versions natives (en el cas de iOS i Android, utilitzant Android Studio o XCode), i executar-lo com a "development server" per a provar-lo al teu dispositiu i poder enviar canvis en directe.
+
+1. **Clona el repositori**:
+   ```bash
+   git clone <URL del repositori>
+   ```
+   O utilitzant, per exemple, la interfície gràfica de GitHub Desktop/VSCode.
+
+2. **Compilar el projecte a natiu amb Expo (requereix credencials per **Android Studio** o **XCode**)**:
+   - Per provar-lo en dispositius natius (Android/iOS):
+     ```bash
+     npx expo run
+     ```
+   - Alternativament, amb `eas build`:
+     ```bash
+     eas build -p <platform>
+     ```
+
+3. **Alternativament, prova el projecte al navegador (versió web)**:
+   ```bash
+   npx expo start
+   ```
+   Després, prem `'w'` per obrir-lo al navegador en `localhost`.
+
+4. **Crea un fitxer `.env`** a la carpeta arrel (`/git_cat-ainahack/.env`) amb el següent contingut:
+
+   ```plaintext
+   EXPO_PUBLIC_HUGGING_FACE_API_URL=
+   EXPO_PUBLIC_HUGGING_FACE_TOKEN=
+   EXPO_PUBLIC_AINAHACK_ENDPOINT_TOKEN=
+   EXPO_PUBLIC_SPEECH_TO_TEXT_API_URL=
+   EXPO_PUBLIC_TEXT_TO_SPEECH_API_URL=
+   ```
+
+   - Completa les URL i tokens segons el teu entorn d’allotjament de models (implementat aquí amb *HuggingFace Inference Endpoints*, s'hauria de modificar els *hooks* que fan les crides API en cas d'utilitzar un altre sistema d'autentificació).
 
 ---
 
