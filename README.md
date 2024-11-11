@@ -72,24 +72,71 @@ TANIA actua com una “capa externa” o interfície addicional, que no força c
 ---
 
 ## ⚙️ Documentació tècnica
-### 🛠️ Arquitectura del sistema
 
-- **Interfície Digital Empàtica**: Dissenyada per ser accessible per a persones de totes les edats.
-- **Model de Llicència GNU**: L'aplicació és open source, permetent-ne l'ús gratuït i contribucions de la comunitat.
-- **Models d'AinaKit utilitzats**:
-  - 🧠✍️ **Text-to-Text**
-  - 🗣️ **Text-to-Speech**
-  - 🎧 **Speech-to-Text**
-  
-  Aquests models són part del projecte **AinaKit**, oferint eficiència i suport multilingüe per a representar totes les varietats del català, incloent dialectes i minoritats.
+![Arquitectura del sistema](README_media/TANIA_system_architecture.png)
 
-## ⚙️ Funcionament i Orquestració
+### 📊 Components del sistema
+- **📱🖥️ Un dispositiu client**, on mostrar la interfície i recollir les explicacions de l'usuari.
+- **🗂️📂 Emmagatzematge d'informació**, com la sessió actual o el repositori de models d'instàncies disponibles.
+- **🧠🗣️ Inferència de models d'IA**, orquestrant sota el paradigma acutal 3 tipus de models: text a text (LLMs), text a veu (TTS), i veu a text (STT).
 
-El sistema s'organitza en diferents etapes:
-- **Escolta Activa**: Transcriu les converses de veu a text i analitza profundament el context.
-- **Processament Intel·ligent**: Decideix les tasques a realitzar i ofereix respostes adequades.
-- **Interfície Humanitzada**: Ofereix una experiència empàtica i natural, superant la simple funció d'interfície de text.
+##### En la nostra demostració a la Hackathon, vam decidir utilitzar:
+- **📱🖥️ Client en forma d'app nativa mòbil i de web**, en forma d'una app universal amb Expo/React Native.
+- **🗂️📂 Emmagatzematge local**, utilitzant tant "assets" com llibreries de *state management* com Zustand.
+- **🧠🗣️ Self-hosting de models open source**, a HuggingFace Inference Endpoints, pagant per instància/hora.
 
+##### Com a expansió o alternativa, es podria fer servir:
+
+- **📱🖥️ Qualsevol altre tipus de client**, com app VR, smartwatch, TV,...
+- **🗂️📂 Emmagatzematge al núvol**, utilitzant una base de dades triant el proveidor i tipus segons la necessitat.
+- **🧠🗣️ Consum *serverless* de models d'IA**, tant d'alternatives Open Source com Llama, com plataformes de models comercials (OpenAI, Anthropic,...), per pagar per resposta (preu per token).
+
+## 🔁 Funcionament de la implementació
+
+![Arquitectura del sistema](README_media/TANIA_agent_flow.png)
+
+La TANIA oscil·la entre 4 estats principals: **Pensar, Parlar. Escoltar i Transcriure.** 
+
+Per ocultar els temps d'espera a plena vista i ser més transparents amb aquests diferents estats, l'avatar de la TANIA reprodueix diferents animacions i transiciona entre elles segons l'estat actual. Aquestes animacions s'han dissenyat a partir de l'interpolació de diferents keyframes, com es pot veure a la següent imatge:
+
+![Keyframes animació](README_media/TANIA_animation_keyframes.png)
+
+En quant a la implementació via codi, la lògica principal s'executa des de la pàgina `index.tsx`(utilitzant `expo-router`), on diferents ***hooks* es subscriuen a canvis d'estat**, i quan aquests canvis es produeixen, cada *hook* condicionalment executa la seva lògica, majoritàriament relacionada amb fer *queries* a les APIs de diferents models d'IA. 
+
+Un cop s'obtenen les respostes, aquestes es processen i es mostren a l'usuari, actualitzant l'estat per fer que el següent *hook* reaccioni amb la seva lògica. Hi ha parts de la lògica que depenen d'accions de l'usuari (clicar botons, parlar,...), i aquestes es gestionen amb canvis d'estat com a esdeveniments.
+
+> [!WARNING]
+> Tot i que el plantejament és sòlid, la implementació que vam fer a la hackathon va prioritzar en tot moment la velocitat d'iteració abans que la llegibilitat i bones pràctiques del codi.
+
+
+Els models d'instància, "formularis a emplenar", són representats dins del nostre sistema en un format JSON enriquit (a `/git_cat-ainahack/prompts/instanceData`), on cada element del formulari conté el seu label, explicació de què espera, una llista d'exemples de resposta, i una referència a si aquest camp pot ser comú amb altres formularis (per guardar el resultat a preferències comunes). Un exemple seria:
+
+```json
+[
+    {
+        "label": "Tipus de pagament",
+        "question": "Quin és el tipus de pagament?",
+        "examples": ["Multa", "Impost", "Taxa", "Dret públic"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Import pagat",
+        "question": "Quin és l'import pagat?",
+        "examples": ["100€", "200€"],
+        "preferencesKey": null
+    },
+    {
+        "label": "Data de pagament",
+        "question": "Quina és la data de pagament?",
+        "examples": ["01/01/2023", "15/05/2023"],
+        "preferencesKey": null
+    }
+]
+```
+
+La creació d'aquests formats enriquits es pot fer tant de forma manual, com automatitzar-lo utilitzant models LLM avançats. L'avantatge és que el sistema sap utilitzar qualsevol formulari en aquest format, i pot ser fàcilment ampliat per a nous formularis.
+
+Els *prompts* que guien l'orquestració dels models i les ordres que reben (a `/git_cat-ainahack/prompts/`), guardats com a constants en arxius `.ts`, poden ser editats per ajustar-se al rendiment de diferents models, canviar la forma de funcionar, o fer servir altres idiomes.
 
 ---
 ## Replicabilitat: Com provar i fer servir TANIA
@@ -98,4 +145,5 @@ El sistema s'organitza en diferents etapes:
 
 ---
 
-*Aquest prototip s'ha desenvolupat en exactament 24h a l'Aina Hackk 2024, per l'equip "git cat/", conformat per l'Isabel Salazar, l'Àlex Rodríguez i l'Oriol Pont. El projecte està sotmès a una llicència tipus GNU: és propietat de la comunitat oberta, i no permet implementacions de codi tancat basats en ell.*
+*Aquest prototip s'ha desenvolupat en exactament 24h a l'Aina Hack 2024, per l'equip "git cat/", conformat per l'Isabel Salazar, l'Àlex Rodríguez i l'Oriol Pont. 
+El projecte està sotmès a una llicència tipus GNU: és propietat de la comunitat oberta, i no permet implementacions de codi tancat basats en ell.*
