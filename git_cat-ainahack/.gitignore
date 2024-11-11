@@ -48,3 +48,4 @@ ios/
 android/
 .env
 *.tar.gz
+.DS_Store
